@@ -39,15 +39,15 @@ void testApp::setup(){
 	// Load a CSV File.
 	csv.loadFile(ofToDataPath("file.csv"));
 	
-	// Print out the first value
+	cout << "Print out a specific CSV value" << endl;
+	cout << csv.data[0][1] << endl;
+	// also you can write...
+	//cout << csv.data[0].at(1) << endl;
+	
+	cout << "Print out the first value" << endl;
 	cout << csv.data[0].front() << endl;
 	
-	// Print out a specific CSV value.
-	cout << csv.data[0][1] << endl;
-	// or
-	cout << csv.data[0].at(1) << endl;
-	
-	// misc...
+	cout << "Maximum Size:";
 	cout << csv.data[0].max_size() << endl;
 	
 }
@@ -66,7 +66,8 @@ void testApp::draw(){
 	
 	// Check how many rows exist.
 	ofDrawBitmapString("csv rows: " + ofToString(csv.numRows), 200, 70);
-	// Check how many columnss exist. for that we reat the first line from csv. (data[0])
+	// Check how many column exist.
+	// For that we reat the first line from CSV. (data[0])
 	ofDrawBitmapString("csv cols: " + ofToString(csv.data[0].size()), 200, 90);
 	
 	// Print out all rows and cols.
@@ -76,27 +77,28 @@ void testApp::draw(){
 		}
 	}
 	
-	
 	ofDrawBitmapString("CSV VECTOR STRING", 200, 350);
-	// read a CSV row as simple String.
+	// Read a CSV row as simple String.
 	vector<string> dataExample = csv.getFromString("0x11120119][100][40][445][23][543][46][24][56][14][964][12", "][");
-	cout << "dataExample[0]" << dataExample[0] << endl;
-	// print the hole csv data string to console.
+	//cout << "dataExample[0]" << dataExample[0] << endl;
+	
+	// Print the hole CSV data string to console.
 	for(int i=0; i<dataExample.size(); i++) {
 		ofDrawBitmapString("[" + ofToString(i) + "]: " + ofToString(dataExample[i]), 200, 370+i*20 );
 	}
+	
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	
-	// Get a specific value as int, float, string etc.
+	// Get a specific value as integer, float, String etc.
 	cout << "getInt: " << csv.getInt(0, 0) << endl;
 	cout << "getFloat: " << csv.getFloat(0, 1) << endl;
 	cout << "getString: " << csv.getString(0, 2) << endl;
 	cout << "getBool: " << csv.getBool(0, 3) << endl;
 	
-    // Get a specific value as int, float, string etc.
+    // Get a specific value as inegert, float, String etc.
 	csv.setInt(0, 0, 2305);
 	cout << "getInt: " << csv.getInt(0, 0) << endl;
 	csv.setFloat(0, 1, 23.666);
@@ -109,7 +111,7 @@ void testApp::keyPressed(int key){
 	// Save File.
 	csv.saveFile(ofToDataPath("savefile.csv"));
 	
-	// Create new File.
+	// Create a new File.
 	csv.createFile(ofToDataPath("createfile.csv"));
 	
 }
