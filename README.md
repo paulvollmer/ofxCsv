@@ -5,8 +5,11 @@
 General information about ofxCsv.  
 
 ofxCsv is an addons for [openFrameworks](http://www.openframeworks.cc/).  
-Let you read and write CSV files.  
-
+With this addon you can read and write CSV files.  
+The addon have different functions to read separated files  
+(not only comma-separated-, tab-separated-values).  
+You can choose a separator to create individual tables.
+  
 ofxCsv is developed by Paul Vollmer http://wrong-entertainment.com/  
 The ofxCsv Project Page is Hosted at http://wrongentertainment.github.com/ofxCsv/  
 Check out for New released Version at http://wrongentertainment.github.com/ofxCsv/  
@@ -28,7 +31,7 @@ Github: http://www.github.com/WrongEntertainment
 
 
 ## Thanks
-Thanks to the creative coding community like Processing and openFrameworks for developing great libraries.  
+Thanks to the creative coding community, Processing and openFrameworks for developing great libraries.  
 Thanks to Tim Pulver, Gabriel Credico, Steffen Hänsch, Dimitar Ruszev and oll the other great developers.  
 
 
