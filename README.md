@@ -4,15 +4,34 @@
 ## Readme  
 General information about ofxCsv.  
 
-ofxCsv is an addons for [openFrameworks](http://www.openframeworks.cc/).  
-With this addon you can read and write CSV files.  
-The addon have different functions to read separated files  
-(not only comma-separated-, tab-separated-values).  
-You can choose a separator to create individual tables.
+ofxCsv is an addons for [openFrameworks](http://www.openframeworks.cc/) to read and write CSV files.    
+With this addon you can read not only comma-separated-, tab-separated-values.  
+You can choose a separator to create individual tables.  
+  
+API Overview:  
+
+- loadFile(string path, string separator, string comments)
+- loadFile(string path, string separator)
+- loadFile(string path)
+- saveFile(string path, string separator, string comments)
+- saveFile(string path, string separator)
+- saveFile(string path)
+- saveFile()
+- createFile(string path)
+- vector<string> getFromString(string s, string separator)
+- vector<string> getFromString(string s)
+- getInt(int row, int col)
+- getFloat(int row, int col)
+- getString(int row, int col)
+- getBool(int row, int col)
+- setInt(int row, int col, int what)
+- setFloat(int row, int col, float what)
+- setString(int row, int col, string what)
+- setBool(int row, int col, bool what)
   
 ofxCsv is developed by Paul Vollmer http://wrong-entertainment.com/  
-The ofxCsv Project Page is Hosted at http://wrongentertainment.github.com/ofxCsv/  
-Check out for New released Version at http://wrongentertainment.github.com/ofxCsv/  
+The ofxCsv Project Page is Hosted at ...  
+Check out for New released Version at https://github.com/wrongentertainment/ofxCsv/  
 
 This file is part of ofxCsv.  
 Author: Paul Vollmer, Modified: 2012.03.23  
@@ -27,12 +46,12 @@ Current version: 0.1.2
 Paul Vollmer  
 Mail: paul.vollmer@fh-potsdam.de  
 Url: http://www.wrong-entertainment.com  
-Github: http://www.github.com/WrongEntertainment  
+Github: http://www.github.com/wrongentertainment  
 
 
 ## Thanks
 Thanks to the creative coding community, Processing and openFrameworks for developing great libraries.  
-Thanks to Tim Pulver, Gabriel Credico, Steffen Hänsch, Dimitar Ruszev and oll the other great developers.  
+Thanks to Tim Pulver, Gabriel Credico, Steffen Hänsch, Dimitar Ruszev and all the other guys.  
 
 
 ## Install
@@ -64,7 +83,7 @@ A detailed changelog, intended for programmers.
 
 ## Bugs  
 You can find a list of all known bugs at  
-https://github.com/WrongEntertainment/ofxCsv/issues  
+https://github.com/wrongentertainment/ofxCsv/issues  
 
 If you want to reporting a new Bug, create a new Issue at  
-https://github.com/WrongEntertainment/ofxCsv/issues  
+https://github.com/wrongentertainment/ofxCsv/issues  
