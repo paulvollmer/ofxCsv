@@ -57,7 +57,7 @@ namespace wng {
 	 */
 	void ofxCsv::loadFile(string path, string separator, string comments){
 		
-		// Save string variables.
+		// Save filepath, separator and comments.
 		filePath = path;
 		fileSeparator = separator;
 		fileComments = comments;
@@ -65,7 +65,7 @@ namespace wng {
 		// Declare a File Stream.
 		ifstream fileIn;
 	
-		// Open your Text File:
+		// Open your text File:
 		fileIn.open(path.c_str());
 	
 		// Check if File is open.
