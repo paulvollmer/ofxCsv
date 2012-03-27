@@ -46,21 +46,27 @@ namespace wng {
 	
 	
 	/**
-	 * Load a CSV file.
+	 * Load a CSV File.
 	 *
 	 * @param path
-	 *        Set the file path.
+	 *        Set the File path.
 	 * @param separator
-	 *        Set the Separator to split CSV file.
+	 *        Set the Separator to split CSV File.
 	 * @param comments
 	 *        Set the Comments sign.
 	 */
 	void ofxCsv::loadFile(string path, string separator, string comments){
 		
-		// Save filepath, separator and comments.
+		// Save Filepath, Separator and Comments to variables.
 		filePath = path;
 		fileSeparator = separator;
 		fileComments = comments;
+		#ifdef DEBUG
+			cout << "[ofxCsv] loadFile" << endl;
+			cout << "         filePath: " << filePath << endl;
+			cout << "         fileSeparator: " << fileSeparator << endl;
+			cout << "         fileComments: " << fileComments << endl;
+		#endif
 		
 		// Declare a File Stream.
 		ifstream fileIn;
@@ -120,7 +126,8 @@ namespace wng {
 	
 	
 	/**
-	 * Load a CSV file.
+	 * Load a CSV File.
+	 * The default Comment sign is "#".
 	 *
 	 * @param path
 	 *        Set the file path.
@@ -138,7 +145,9 @@ namespace wng {
 	
 	
 	/**
-	 * Load a CSV file.
+	 * Load a CSV File.
+	 * The default Separator is ",".
+	 * The default Comment sign is "#".
 	 *
 	 * @param path
 	 *        Set the file path.
@@ -201,7 +210,7 @@ namespace wng {
 	 */
 	void ofxCsv::saveFile(string path, string separator) {
 	
-		createFile(path);
+		//createFile(path);
 		saveFile(path, separator, fileComments);
 	
 	}
@@ -218,7 +227,7 @@ namespace wng {
 	 */
 	void ofxCsv::saveFile(string path) {
 	
-		createFile(path);
+		//createFile(path);
 		saveFile(path, fileSeparator, fileComments);
 	
 	}
