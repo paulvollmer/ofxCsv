@@ -1,7 +1,8 @@
 /**
  * ofxCsv.h is developed by Paul Vollmer
  * http://www.wng.cc
- * 
+ * Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde)
+ *
  * 
  * Copyright (c) 2011-2012 Paul Vollmer
  *

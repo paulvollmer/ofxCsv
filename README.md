@@ -4,9 +4,9 @@
 ## Readme  
 General information about ofxCsv.  
 
-ofxCsv is an addons for [openFrameworks](http://www.openframeworks.cc/) to read and write CSV files.    
-With this addon you can read not only comma-separated-, tab-separated-values.  
-You can choose a separator to create individual tables.  
+ofxCsv is an addons for [openFrameworks](http://www.openframeworks.cc/) to read and write CSV(Character Separated Values) files.  
+You can choose a character separator to create individual tables.  
+Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde)  
   
 API Overview:  
 
