@@ -6,11 +6,17 @@ ofxCsv is an addon for [openFrameworks](http://www.openframeworks.cc/) to read a
 You can choose a character separator to create individual tables.  
 Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde).  
   
-Current version: 0.1.2  
-ofxCsv is stable and versioned using [semantic versioning](http://semver.org/).  
-
-Tested Platform: MacOS  
-Dependencies: openFrameworks version 0.07  
+**Current Version:**  
+0.1.2 (stable and versioned using [semantic versioning](http://semver.org/))  
+  
+**Tested Platform:**  
+MacOS 10.6   
+Win ???  
+Linux ???  
+**openFrameworks version:**  
+0.07  
+**Dependencies**  
+X  
 
 **API Overview:**  
 loadFile(string path, string separator, string comments)  
@@ -59,4 +65,4 @@ Github: http://www.github.com/wrongentertainment
 
 
 ## License 
-ofxCsv is Licensed under the GNU Lesser General Public License: http://www.opensource.org/licenses/LGPL-3.0  
+ofxCsv is Licensed under MIT Public License: http://www.opensource.org/licenses/MIT  
