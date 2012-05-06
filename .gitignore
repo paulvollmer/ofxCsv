@@ -1,3 +1,5 @@
+*.DS_Store
+
 # XCODE IGNORES
 
 # ignore the compiled build folder and application.
