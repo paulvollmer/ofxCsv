@@ -26,13 +26,13 @@
  *  THE SOFTWARE.
  *
  *  
- *  @testet_oF          0.07
- *  @testet_plattform   MacOs 10.6
+ *  @testet_oF          0071
+ *  @testet_plattform   MacOs 10.6+
  *                      ??? Win
  *                      ??? Linux
  *  @dependencies       
- *  @modified           2012.05.06
- *  @version            0.1.2b
+ *  @modified           2012.06.28
+ *  @version            0.1.3
  */
 
 #pragma once
