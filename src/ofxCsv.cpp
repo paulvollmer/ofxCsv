@@ -306,7 +306,7 @@ namespace wng {
 	 */
 	vector<string> ofxCsv::getFromString(string csv){
 		
-		getFromString(csv, ",");
+		return getFromString(csv, ",");
 	
 	}
 	
