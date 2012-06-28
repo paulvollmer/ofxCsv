@@ -7,14 +7,14 @@ You can choose a character separator to create individual tables.
 Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde).  
   
 **Current Version:**  
-0.1.2 (stable and versioned using [semantic versioning](http://semver.org/))  
+0.1.3 (stable and versioned using [semantic versioning](http://semver.org/))  
   
 **Tested Platform:**  
 MacOS 10.6   
 Win ???  
 Linux ???  
 **openFrameworks version:**  
-0.07  
+0071  
 **Dependencies**  
 X  
 
@@ -44,7 +44,10 @@ You can find a list of all known bugs at [GitHub](https://github.com/wrongentert
 
 ## Changelog  
 A detailed changelog, intended for programmers.  
-
+  
+0.1.3  
+small bugfix  (thanks to Pinkerton)  
+  
 0.1.2    
 moved to ofxCsv Repository  
 
