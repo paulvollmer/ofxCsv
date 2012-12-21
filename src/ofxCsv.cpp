@@ -102,7 +102,8 @@ namespace wng {
 					rows.push_back(temp);
 				
 					// Split row into cols.
-					vector<string> cols = ofSplitString(rows[lineCount], ",");
+				// formerly was: vector<string> cols = ofSplitString(rows[lineCount], ",");
+					vector<string> cols = ofSplitString(rows[lineCount], separator);
 				
 					// Write the string to data.
 					data.push_back(cols);
