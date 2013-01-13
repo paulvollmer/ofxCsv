@@ -102,7 +102,8 @@ namespace wng {
 					rows.push_back(temp);
 				
 					// Split row into cols.
-					vector<string> cols = ofSplitString(rows[lineCount], ",");
+				// formerly was: vector<string> cols = ofSplitString(rows[lineCount], ",");
+					vector<string> cols = ofSplitString(rows[lineCount], separator);
 				
 					// Write the string to data.
 					data.push_back(cols);
@@ -128,9 +129,22 @@ namespace wng {
 		}
 	
 	}
+    
+    void ofxCsv::setData( vector<vector<string> > data)
+    {
+        this->data = data;
+        numRows = data.size();
+    }
 	
 	
-	
+	void ofxCsv::clear()
+    {
+        for( int i = 0; i < data.size(); i++ )
+        {
+            data[i].clear();
+        }
+        data.clear();
+    }
 	
 	
 	/**
@@ -197,9 +211,9 @@ namespace wng {
 				}
 			}
 			myfile.close();
-			//cout << "Open file" << endl;
+//			cout << "Open file" << endl;
 		} else {
-			//cout << "Unable to open file" << endl;
+//			cout << "Unable to open file    " << endl;
 		}
 	
 	}
@@ -338,7 +352,7 @@ namespace wng {
 	 * @return float
 	 */
 	float ofxCsv::getFloat(int row, int col){
-	
+		allocateData(row, col);
 		return ofToFloat(data[row][col]);//temp;
 	
 	}
@@ -357,7 +371,7 @@ namespace wng {
 	 * @return float
 	 */
 	string ofxCsv::getString(int row, int col){
-		
+		allocateData(row, col);
 		return data[row][col];
 	
 	}
@@ -376,7 +390,7 @@ namespace wng {
 	 * @return bool
 	 */
 	bool ofxCsv::getBool(int row, int col){
-		
+		allocateData(row, col);
 		return ofToBool(data[row][col]);
 	
 	}
@@ -396,7 +410,7 @@ namespace wng {
 	 *        new Integer
 	 */
 	void ofxCsv::setInt(int row, int col, int what){
-	
+		allocateData(row, col);
 		data[row][col] = ofToString(what);
 	
 	}
@@ -416,7 +430,7 @@ namespace wng {
 	 *        new row Float
 	 */
 	void ofxCsv::setFloat(int row, int col, float what){
-	
+		allocateData(row, col);
 		data[row][col] = ofToString(what);
 	
 	}
@@ -436,7 +450,7 @@ namespace wng {
 	 *        new row String
 	 */
 	void ofxCsv::setString(int row, int col, string what){
-	
+		allocateData(row, col);
 		data[row][col] = ofToString(what);
 	
 	}
@@ -457,9 +471,18 @@ namespace wng {
 	 *        new row Boolean
 	 */
 	void ofxCsv::setBool(int row, int col, bool what){
-		
+		allocateData(row, col);
 		data[row][col] = ofToString(what);
 	
 	}
 	
+    void ofxCsv::allocateData(int row, int col)
+    {
+        if ( data.size() <= row)
+        {
+            data.push_back(vector<string>());
+            numRows = data.size();
+        }
+        if ( data[ row ].size() <= col ) data[ row ].push_back("");
+    }
 }
