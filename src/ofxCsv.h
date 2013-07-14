@@ -83,8 +83,9 @@ namespace wng {
 			void setFloat(int row, int col, float what);
 			void setString(int row, int col, string what);
 			void setBool(int row, int col, bool what);
-		
-			
+            void setData( vector<vector<string> > data);
+            void clear();
+        
 			/*
 			 * Variables
 			 */
@@ -97,7 +98,8 @@ namespace wng {
 			int	numRows;				    // The number of data rows.
 			int	numCols;				    // Also, empty lines containing only whitespace characters
 											// that follow the last non-empty row are not included.
-	
+    private:
+        void allocateData( int row, int col);
 	};
 
 };
