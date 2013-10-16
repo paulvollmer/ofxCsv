@@ -69,3 +69,6 @@ Github: http://www.github.com/wrongentertainment
 
 ## License 
 ofxCsv is Licensed under MIT Public License: http://www.opensource.org/licenses/MIT  
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/WrongEntertainment/ofxcsv/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
