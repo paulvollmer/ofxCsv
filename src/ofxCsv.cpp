@@ -144,6 +144,7 @@ namespace wng {
             data[i].clear();
         }
         data.clear();
+		numRows = 0;
     }
 	
 	
