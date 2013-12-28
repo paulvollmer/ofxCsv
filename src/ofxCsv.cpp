@@ -144,6 +144,7 @@ namespace wng {
             data[i].clear();
         }
         data.clear();
+		numRows = 0;
     }
 	
 	
@@ -204,9 +205,13 @@ namespace wng {
 			// Write data to file.
 			for(int i=0; i<numRows; i++){
 				for(int j=0; j<data[i].size(); j++){
-					myfile << data[i][j] << separator;
+					
+					myfile << data[i][j];
+					
 					if(j==(data[i].size()-1)){
 						myfile << "\n";
+					} else {
+						myfile << separator;
 					}
 				}
 			}
