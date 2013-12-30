@@ -6,6 +6,8 @@ ofxCsv is an addon for [openFrameworks](http://www.openframeworks.cc/) to read a
 You can choose a character separator to create individual tables.  
 Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde).  
   
+Check out for new release at https://github.com/wrongentertainment/ofxCsv/  
+
 **Current Version:**  
 0.1.3 (stable and versioned using [semantic versioning](http://semver.org/))  
   
@@ -58,13 +60,14 @@ small changes (also at ofxWrongPowder Repository)
 starting addon at ofxWrongPowder Repository
 
 
-## Author  
-ofxCsv is developed by Paul Vollmer http://wrong-entertainment.com/  
-Check out for new release at https://github.com/wrongentertainment/ofxCsv/  
-  
-Mail: paul.vollmer@fh-potsdam.de  
-Url: http://www.wrong-entertainment.com  
-Github: http://www.github.com/wrongentertainment  
+## Contributors
+
+
+- [Paul Vollmer](http://www.github.com/wrongentertainment) paul.vollmer@fh-potsdam.de
+- [Luke Sturgeon](http://lukesturgeon.co.uk)
+- [hiroyuki](https://github.com/hiroyuki) hori.hiroyuki@gmail.com
+- [ofCinzio](https://github.com/ofCinzio) matteocinzio@tiscali.it
+- [Stephen Pinkerton](https://github.com/Pinkerton) stephen@spinkerton.org
 
 
 ## License 
