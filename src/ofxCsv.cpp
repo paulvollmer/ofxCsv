@@ -47,6 +47,9 @@ namespace wng {
 	 * A Constructor, usually called to initialize and start the class.
 	 */
 	ofxCsv::ofxCsv(){
+		
+		// set the default seperator value
+		fileSeparator = ",";
 	}
 
 

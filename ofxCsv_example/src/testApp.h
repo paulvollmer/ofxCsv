@@ -64,5 +64,8 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 	
 		ofxCsv csv;
+		ofxCsv csvRecorder;
+	
+		bool recordingMouse;
 		
 };
