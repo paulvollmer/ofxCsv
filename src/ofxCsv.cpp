@@ -50,6 +50,7 @@ namespace wng {
 		
 		// set the default seperator value
 		fileSeparator = ",";
+		numRows = 0;
 	}
 
 
