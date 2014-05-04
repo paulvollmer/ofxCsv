@@ -13,7 +13,7 @@ Check out for new release at https://github.com/wrongentertainment/ofxCsv/
   
 **Tested Platform:**  
 MacOS 10.6   
-Win ???  
+Win8 64bit  
 Linux ???  
 **openFrameworks version:**  
 0071  
