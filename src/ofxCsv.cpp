@@ -90,10 +90,11 @@ namespace wng {
 		if(fileIn.is_open()) {
 			int lineCount = 0;
 			vector<string> rows;
-		
-			while(fileIn != NULL) {
-				string temp;		
-				getline(fileIn, temp);
+
+            string temp;
+			while(getline(fileIn, temp)) {
+
+
 			
 				// Skip empty lines.
 				if(temp.length() == 0) {
