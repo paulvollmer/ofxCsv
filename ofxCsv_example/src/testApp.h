@@ -5,7 +5,7 @@
  *  
  *  The MIT License
  *
- *  Copyright (c) 2011-2012 Paul Vollmer, http://www.wng.cc
+ *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -64,5 +64,8 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 	
 		ofxCsv csv;
+		ofxCsv csvRecorder;
+	
+		bool recordingMouse;
 		
 };

@@ -5,7 +5,7 @@
  *  
  *  The MIT License
  *
- *  Copyright (c) 2011-2012 Paul Vollmer, http://www.wng.cc
+ *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -95,24 +95,47 @@ void testApp::draw(){
 		ofDrawBitmapString("[" + ofToString(i) + "]: " + ofToString(dataExample[i]), 200, 370+i*20 );
 	}
 	
+	// Show the current mouse recording state
+	ofDrawBitmapString("CSV RECORDER", 500, 350);
+	ofDrawBitmapString("csv rows: " + ofToString(csvRecorder.numRows), 500, 370);
+	
+	if (recordingMouse == true) {
+		ofDrawBitmapString("state: recording...", 500, 390);
+	}
+	else {
+		ofDrawBitmapString("state: ready", 500, 390);
+	}
+	
+	ofDrawBitmapString("CONTROLS", 200, 690);
+	ofDrawBitmapString("s = save csv data / x = clear csvRecorder data / r = save csvRecorder data", 200, 710);
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	
-	// Set a 
-    // Get a specific value as inegert, float, String etc.
-	csv.setInt(0, 0, 2305);
-	cout << "getInt: " << csv.getInt(0, 0) << endl;
-	csv.setFloat(0, 1, 23.666);
-	cout << "getFloat: " << csv.getFloat(0, 1) << endl;
-	csv.setString(0, 2, "helloworld");
-	cout << "getString: " << csv.getString(0, 2) << endl;
-	csv.setBool(0, 3, true);
-	cout << "getBool: " << csv.getBool(0, 3) << endl;
-	
-	// Save File.
-	csv.saveFile(ofToDataPath("savefile.csv"));
+	if (key == 's') {
+		// Get a specific value as inegert, float, String etc.
+		csv.setInt(0, 0, 2305);
+		cout << "getInt: " << csv.getInt(0, 0) << endl;
+		csv.setFloat(0, 1, 23.666);
+		cout << "getFloat: " << csv.getFloat(0, 1) << endl;
+		csv.setString(0, 2, "helloworld");
+		cout << "getString: " << csv.getString(0, 2) << endl;
+		csv.setBool(0, 3, true);
+		cout << "getBool: " << csv.getBool(0, 3) << endl;
+		
+		// Save File.
+		csv.saveFile(ofToDataPath("savefile.csv"));
+	}
+	else if (key == 'x') {
+		// clear all data from csvRecorder
+		csvRecorder.clear();
+	}
+	else if (key == 'r') {
+		// Save the recorded values in the csvRecorder ofxCsv object
+		csvRecorder.saveFile( ofToDataPath( "MyRecordedMouseData.csv" ));
+		ofLog() << "Saved " << csvRecorder.numRows << " rows of mouse data";
+	}
 	
 }
 
@@ -130,18 +153,27 @@ void testApp::mouseMoved(int x, int y ){
 }
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void testApp::mouseDragged(int x, int y, int button){	
+	
+	// Add the current cursor position to the mouseData
+	int row = csvRecorder.numRows;
+	csvRecorder.setInt(row, 0, x);
+	csvRecorder.setInt(row, 1, y);
 	
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
 	
+	// change the recording state for the mouse
+	recordingMouse = true;
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
 	
+	// change the recording state for the mouse
+	recordingMouse = false;
 }
 
 //--------------------------------------------------------------

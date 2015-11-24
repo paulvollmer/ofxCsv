@@ -6,12 +6,14 @@ ofxCsv is an addon for [openFrameworks](http://www.openframeworks.cc/) to read a
 You can choose a character separator to create individual tables.  
 Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde).  
   
+Check out for new release at https://github.com/paulvollmer/ofxCsv/  
+
 **Current Version:**  
 0.1.3 (stable and versioned using [semantic versioning](http://semver.org/))  
   
 **Tested Platform:**  
 MacOS 10.6   
-Win ???  
+Win8 64bit  
 Linux ???  
 **openFrameworks version:**  
 0071  
@@ -39,10 +41,11 @@ setString(int row, int col, string what)
 setBool(int row, int col, bool what)  
 
 **Issues and Bugs**  
-You can find a list of all known bugs at [GitHub](https://github.com/wrongentertainment/ofxCsv/issues). Please report if you find an unknown bug.  
+You can find a list of all known bugs at [GitHub](https://github.com/paulvollmer/ofxCsv/issues). Please report if you find an unknown bug.  
 
 
 ## Changelog  
+
 A detailed changelog, intended for programmers.  
   
 0.1.3  
@@ -58,14 +61,15 @@ small changes (also at ofxWrongPowder Repository)
 starting addon at ofxWrongPowder Repository
 
 
-## Author  
-ofxCsv is developed by Paul Vollmer http://wrong-entertainment.com/  
-Check out for new release at https://github.com/wrongentertainment/ofxCsv/  
-  
-Mail: paul.vollmer@fh-potsdam.de  
-Url: http://www.wrong-entertainment.com  
-Github: http://www.github.com/wrongentertainment  
+## Contributors
+
+- [Paul Vollmer](http://www.github.com/paulvollmer) paul.vollmer@fh-potsdam.de
+- [Luke Sturgeon](http://lukesturgeon.co.uk)
+- [hiroyuki](https://github.com/hiroyuki) hori.hiroyuki@gmail.com
+- [ofCinzio](https://github.com/ofCinzio) matteocinzio@tiscali.it
+- [Stephen Pinkerton](https://github.com/Pinkerton) stephen@spinkerton.org
 
 
 ## License 
+
 ofxCsv is Licensed under MIT Public License: http://www.opensource.org/licenses/MIT  

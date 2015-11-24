@@ -5,7 +5,7 @@
  *  
  *  The MIT License
  *
- *  Copyright (c) 2011-2012 Paul Vollmer, http://www.wng.cc
+ *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,10 @@ namespace wng {
 	 * A Constructor, usually called to initialize and start the class.
 	 */
 	ofxCsv::ofxCsv(){
+		
+		// set the default seperator value
+		fileSeparator = ",";
+		numRows = 0;
 	}
 
 
@@ -86,10 +90,11 @@ namespace wng {
 		if(fileIn.is_open()) {
 			int lineCount = 0;
 			vector<string> rows;
-		
-			while(fileIn != NULL) {
-				string temp;		
-				getline(fileIn, temp);
+
+            string temp;
+			while(getline(fileIn, temp)) {
+
+
 			
 				// Skip empty lines.
 				if(temp.length() == 0) {
@@ -144,6 +149,7 @@ namespace wng {
             data[i].clear();
         }
         data.clear();
+		numRows = 0;
     }
 	
 	
@@ -204,9 +210,13 @@ namespace wng {
 			// Write data to file.
 			for(int i=0; i<numRows; i++){
 				for(int j=0; j<data[i].size(); j++){
-					myfile << data[i][j] << separator;
+					
+					myfile << data[i][j];
+					
 					if(j==(data[i].size()-1)){
 						myfile << "\n";
+					} else {
+						myfile << separator;
 					}
 				}
 			}
