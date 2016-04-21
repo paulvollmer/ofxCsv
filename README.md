@@ -1,26 +1,23 @@
-# ofxCsv
+ofxCsv
+======
+ 
+ofxCsv is an addon for [openFrameworks](http://www.openframeworks.cc) to read and write CSV(Character Separated Values) files.  
 
-
-**General Information**  
-ofxCsv is an addon for [openFrameworks](http://www.openframeworks.cc/) to read and write CSV(Character Separated Values) files.  
 You can choose a character separator to create individual tables.  
+
 Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde).  
   
-Check out for new release at https://github.com/paulvollmer/ofxCsv/  
+Check out for new release at <https://github.com/paulvollmer/ofxCsv>
 
-**Current Version:**  
-0.1.3 (stable and versioned using [semantic versioning](http://semver.org/))  
-  
-**Tested Platform:**  
-MacOS 10.6   
-Win8 64bit  
-Linux ???  
-**openFrameworks version:**  
-0071  
-**Dependencies**  
-X  
+Current Version  
+---------------
 
-**API Overview:**  
+0.1.3 (stable and versioned using [semantic versioning](http://semver.org))
+
+API Overview
+------------
+
+~~~
 loadFile(string path, string separator, string comments)  
 loadFile(string path, string separator)  
 loadFile(string path)  
@@ -39,12 +36,28 @@ setInt(int row, int col, int what)
 setFloat(int row, int col, float what)  
 setString(int row, int col, string what)  
 setBool(int row, int col, bool what)  
+~~~
 
-**Issues and Bugs**  
+Installation & Usage
+--------------------
+
+To install ofxCsv, move the ofxCsv folder to your `openFrameworks/addons/` folder.
+
+Basic usage is demonstrated by csvExample.
+
+With OF version 0.9.0+, the OF Project Generator will add the compiler search paths for the project automatically if configured to include ofxCsv.
+
+Project files for the example are not included so you will need to generate the project files for your operating system and development environment using the OF ProjectGenerator which is included with the OpenFrameworks distribution.
+
+Press the Import button in the ProjectGenerator & select the `addons/ofxCsv/csvExample` folder. Next, press the "Generate" to populate the example with the project files you will need to build it on your OS.
+
+Issues and Bugs
+---------------
+
 You can find a list of all known bugs at [GitHub](https://github.com/paulvollmer/ofxCsv/issues). Please report if you find an unknown bug.  
 
-
-## Changelog  
+Changelog  
+---------
 
 A detailed changelog, intended for programmers.  
   
@@ -60,8 +73,8 @@ small changes (also at ofxWrongPowder Repository)
 0.1.0  
 starting addon at ofxWrongPowder Repository
 
-
-## Contributors
+Contributors
+------------
 
 - [Paul Vollmer](http://www.github.com/paulvollmer) paul.vollmer@fh-potsdam.de
 - [Luke Sturgeon](http://lukesturgeon.co.uk)
@@ -70,6 +83,9 @@ starting addon at ofxWrongPowder Repository
 - [Stephen Pinkerton](https://github.com/Pinkerton) stephen@spinkerton.org
 
 
-## License 
+License 
+-------
 
-ofxCsv is Licensed under MIT Public License: http://www.opensource.org/licenses/MIT  
+ofxCsv is Licensed under MIT Public License: http://www.opensource.org/licenses/MIT
+
+See also, LICENSE.txt in this distribution.
