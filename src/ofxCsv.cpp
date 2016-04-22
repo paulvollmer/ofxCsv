@@ -397,7 +397,6 @@ void ofxCsv::trim() {
 }
 
 //--------------------------------------------------
-
 vector<string> ofxCsv::fromRowString(string row, string separator) {
 	return ofxCsvRow::fromString(row, separator);
 

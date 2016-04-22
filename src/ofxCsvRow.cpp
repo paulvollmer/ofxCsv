@@ -53,10 +53,12 @@ ofxCsvRow::ofxCsvRow(vector<string> &cols) {
 	load(cols);
 }
 
+//--------------------------------------------------
 ofxCsvRow::ofxCsvRow(const ofxCsvRow &mom) {
 	data = mom.data;
 }
-	
+
+//--------------------------------------------------
 ofxCsvRow& ofxCsvRow::operator=(const ofxCsvRow &mom) {
 	data = mom.data;
 	return *this;
