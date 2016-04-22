@@ -61,10 +61,25 @@ bool ofxCsv::load(string path, string separator, string comment) {
 	ofLogVerbose("ofxCsv") << "  fieldSeparator: " << fieldSeparator;
 	ofLogVerbose("ofxCsv") << "  commentPrefix: " << commentPrefix;
 	
+	// do some checks
+	ofFile file(ofToDataPath(path), ofFile::Reference);
+	if(!file.exists()) {
+		ofLogError("ofxCsv") << "Cannot load " << path << ": file not found";
+		return false;
+	}
+	if(!file.canRead()) {
+		ofLogError("ofxCsv") << "Cannot load " << path << ": file not readable";
+		return false;
+	}
+	if(file.isDirectory()) {
+		ofLogError("ofxCsv") << "Cannot load " << path << ": \"file\" is actually a directory";
+		return false;
+	}
+	
 	// open file & read each line
 	int lineCount = 0;
 	int maxCols = 0;
-	ofBuffer buffer = ofBufferFromFile(ofToDataPath(path));
+	ofBuffer buffer = ofBufferFromFile(file.getAbsolutePath());
 	for(auto line : buffer.getLines()) {
 		
 		// skip empty lines
@@ -130,17 +145,25 @@ bool ofxCsv::save(string path, bool quote, string separator) {
 	ofLogVerbose("ofxCsv") << "  fieldSeparator: " << fieldSeparator;
 	ofLogVerbose("ofxCsv") << "  quoteFields: " << quoteFields;
 	
+	// do some checks
 	if(data.empty()) {
 		ofLogWarning("ofxCsv") << "Aborting save to " << path << ": data is empty";
 		return false;
 	}
-	
-	// create file if needed
-	if(!ofFile::doesFileExist(ofToDataPath(path))) {
+	ofFile file(ofToDataPath(path), ofFile::Reference);
+	if(!file.exists()) {
 		if(!createFile(path)) {
 			ofLogError("ofxCsv") << "Could not save to " << path << ": couldn't create";
 			return false;
 		}
+	}
+	if(!file.canWrite()) {
+		ofLogError("ofxCsv") << "Cannot save " << path << ": file not writable";
+		return false;
+	}
+	if(file.isDirectory()) {
+		ofLogError("ofxCsv") << "Cannot save " << path << ": \"file\" is actually a directory";
+		return false;
 	}
 	
 	// fill buffer & write to file
@@ -150,7 +173,7 @@ bool ofxCsv::save(string path, bool quote, string separator) {
 		buffer.append(toRowString(row, fieldSeparator, quote)+"\n");
 		lineCount++;
 	}
-	if(!ofBufferToFile(path, buffer)) {
+	if(!ofBufferToFile(file.getAbsolutePath(), buffer)) {
 		ofLogError("ofxCsv") << "Could not save to " << path << ": couldn't save buffer";
 		return false;
 	}
@@ -244,32 +267,38 @@ unsigned int ofxCsv::getNumCols(int row) {
 	if(row > -1 && row < data.size()) {
 		return data[row].size();
 	}
-	ofLogWarning("ofxCsv") << "Cannot get num cols for row " << row
-	    << ": total num rows is " << data.size();
 	return 0;
 }
 
 //--------------------------------------------------
 int ofxCsv::getInt(int row, int col) {
-	expandRow(row, col);
+	if(row >= data.size()) {
+		return 0;
+	}
 	return data[row].getInt(col);
 }
 
 //--------------------------------------------------
 float ofxCsv::getFloat(int row, int col) {
-	expandRow(row, col);
+	if(row >= data.size()) {
+		return 0.0f;
+	}
 	return data[row].getFloat(col);
 }
 
 //--------------------------------------------------
 string ofxCsv::getString(int row, int col) {
-	expandRow(row, col);
+	if(row >= data.size()) {
+		return "";
+	}
 	return data[row].getString(col);
 }
 
 //--------------------------------------------------
 bool ofxCsv::getBool(int row, int col) {
-	expandRow(row, col);
+	if(row >= data.size()) {
+		return false;
+	}
 	return data[row].getBool(col);
 }
 
@@ -299,7 +328,7 @@ void ofxCsv::setBool(int row, int col, bool what) {
 //--------------------------------------------------
 void ofxCsv::print() {
 	for(auto &row : data) {
-		ofLogNotice("ofxCsv") << row;
+		ofLog() << row;
 	}
 }
 
@@ -381,6 +410,11 @@ size_t ofxCsv::size() {
 	return data.size();
 }
 
+//--------------------------------------------------
+bool ofxCsv::empty() {
+	return data.empty();
+}
+
 // UTIL
 
 //--------------------------------------------------
@@ -393,7 +427,6 @@ void ofxCsv::trim() {
 //--------------------------------------------------
 vector<string> ofxCsv::fromRowString(string row, string separator) {
 	return ofxCsvRow::fromString(row, separator);
-
 }
 
 //--------------------------------------------------
@@ -403,7 +436,6 @@ vector<string> ofxCsv::fromRowString(string row) {
 
 //--------------------------------------------------
 string ofxCsv::toRowString(vector<string> row, string separator, bool quote) {
-
 	return ofxCsvRow::toString(row, separator, quote);
 }
 

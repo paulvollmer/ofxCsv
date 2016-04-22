@@ -100,7 +100,7 @@ unsigned int ofxCsvRow::getNumCols() {
 //--------------------------------------------------
 int ofxCsvRow::getInt(int col) {
 	expand(col);
-	if(data[col].empty()) {
+	if(col >= data.size()) {
 		return 0;
 	}
 	return ofToInt(data[col]);
@@ -109,7 +109,7 @@ int ofxCsvRow::getInt(int col) {
 //--------------------------------------------------
 float ofxCsvRow::getFloat(int col) {
 	expand(col);
-	if(data[col].empty()) {
+	if(col >= data.size()) {
 		return 0.0f;
 	}
 	return ofToFloat(data[col]);
@@ -117,14 +117,15 @@ float ofxCsvRow::getFloat(int col) {
 
 //--------------------------------------------------
 string ofxCsvRow::getString(int col) {
-	expand(col);
+	if(col >= data.size()) {
+		return "";
+	}
 	return data[col];
 }
 
 //--------------------------------------------------
 bool ofxCsvRow::getBool(int col) {
-	expand(col);
-	if(data[col].empty()) {
+	if(col >= data.size()) {
 		return false;
 	}
 	return ofToBool(data[col]);
@@ -235,6 +236,11 @@ string ofxCsvRow::back() {
 //--------------------------------------------------
 size_t ofxCsvRow::size() {
 	return data.size();
+}
+
+//--------------------------------------------------
+bool ofxCsvRow::empty() {
+	return data.empty();
 }
 
 // UTIL

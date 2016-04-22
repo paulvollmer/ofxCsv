@@ -91,6 +91,8 @@ class ofxCsv {
 	
 		/// Save a CSV file.
 		///
+		/// Creates any required folders in the path, if needed.
+		///
 		/// \param filePath File path to save.
 		/// \param quote Should the fields be double quoted? default false.
 		/// \param separator Field separator string, default comma ",".
@@ -99,7 +101,8 @@ class ofxCsv {
 	
 		/// Save a CSV file.
 		///
-		/// Uses the current field separator.
+		/// Uses the current field separator. Creates any required folders in
+		/// the path, if needed.
 		///
 		/// \param filePath File path to save.
 		/// \param quote Should the fields be double quoted? default false.
@@ -109,12 +112,15 @@ class ofxCsv {
 		/// Save a CSV file.
 		///
 		/// Uses the current field separator & saves the fields without quotes.
+		/// Creates any required folders in the path, if needed.
 		///
 		/// \param path File path to save. Leave empty to save current file.
 		/// \returns true if file saved successfully
 		bool save(string path="");
 	
 		/// Create an empty CSV file.
+		///
+		/// Creates any required folders in the path, if needed.
 		///
 		/// \param path File path to create. Sets current file path.
 		/// \returns true if file saved successfully
@@ -280,6 +286,10 @@ class ofxCsv {
 	
 		/// Alternate row size getter.
 		size_t size();
+	
+		/// Is the table empty?
+		/// \returns true if there is no row data.
+		bool empty();
 	
 	/// \section Util
 	

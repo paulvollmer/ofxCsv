@@ -37,21 +37,29 @@ void ofApp::setup(){
 	ofSetLogLevel("ofxCsv", OF_LOG_VERBOSE); // See what's going on inside.
 	
 	// Load a CSV File.
-	csv.load("file.csv");
-	//csv.trim(); // Trim leading/trailing whitespace from non-quoted fields.
+	if(csv.load("fil.csv")) {
+		//csv.trim(); // Trim leading/trailing whitespace from non-quoted fields.
+		
+		// Like with C++ vectors, the index operator is a quick way to grab row
+		// & col data, however this will cause a crash if the row or col doesn't
+		// exist, ie. the file didn't load.
+		ofLog() << "Print out a specific CSV value";
+		ofLog() << csv[0][1];
+		// also you can write...
+		ofLog() << csv[0].at(1);
+		// or you can get the row itself...
+		ofxCsvRow row = csv[0];
+		ofLog() << row.getString(1);
+	}
 	
-	ofLog() << "Print out a specific CSV value";
-	ofLog() << csv[0][1];
-	// also you can write...
-	ofLog() << csv[0].at(1);
-	// or you can get the row itself...
-	ofxCsvRow row = csv[0];
-	ofLog() << row.getString(1);
-	
-	csv.print();
-	
+	// A safer method is to use the getters which will do a check on the
+	// given row & col indices but will be slightly slower.
 	ofLog() << "Print out the first value";
-	ofLog() << csv[0].front();
+	ofLog() << csv.getString(0, 0);
+	
+	ofLog() << "Print the table";
+	// Print the table to the console. Uses default separator ",".
+	csv.print();
 }
 
 //--------------------------------------------------------------
@@ -122,14 +130,22 @@ void ofApp::keyPressed(int key){
 		ofLog() << "getBool: " << csv.getBool(0, 3);
 		
 		// You can also do this via the ofxCsvRow object.
-		csv[0].setInt(0, 2305);
-		ofLog() << "getInt: " << csv[0].getInt(0);
-		csv[0].setFloat(1, 23.666);
-		ofLog() << "getFloat: " << csv[0].getFloat(1);
-		csv[0].setString(2, "helloworld");
-		ofLog() << "getString: " << csv[0].getString(2);
-		csv[0].setBool(3, true);
-		ofLog() << "getBool: " << csv[0].getBool(3);
+		//
+		// We do a check here since we're using the index operator which will
+		// cause a crash if the row doesn't exist, ie. the file didn't load.
+		//
+		// (Although in this case, the row data is gauranteed to exist since
+		// the set methods above will create them, if needed.)
+		if(csv.getNumRows() > 0) {
+			csv[0].setInt(0, 2305);
+			ofLog() << "getInt: " << csv[0].getInt(0);
+			csv[0].setFloat(1, 23.666);
+			ofLog() << "getFloat: " << csv[0].getFloat(1);
+			csv[0].setString(2, "helloworld");
+			ofLog() << "getString: " << csv[0].getString(2);
+			csv[0].setBool(3, true);
+			ofLog() << "getBool: " << csv[0].getBool(3);
+		}
 		
 		// Save File.
 		csv.save("savefile.csv");

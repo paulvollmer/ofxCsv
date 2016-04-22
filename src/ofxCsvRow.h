@@ -180,6 +180,10 @@ class ofxCsvRow {
 		/// Alternate column size getter.
 		size_t size();
 	
+		/// Is the row empty?
+		/// \returns true if there is no col data.
+		bool empty();
+	
 	/// \section Util
 	
 		/// Trim leading & trailing whitespace from all non-quoted fields.
