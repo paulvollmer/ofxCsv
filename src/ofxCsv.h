@@ -33,7 +33,7 @@
 #include "ofxCsvRow.h"
 
 /// \class ofxCsv
-/// \brief table data loaded from & saved to CSV (Comma-Separated Value) files
+/// \brief table data loaded from & saved to CSV (Character Separated Value) files
 ///
 /// See https://en.wikipedia.org/wiki/Comma-separated_values for format info.
 ///

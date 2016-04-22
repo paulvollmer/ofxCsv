@@ -16,7 +16,7 @@
 
 meta:
 	ADDON_NAME = ofxCsv
-	ADDON_DESCRIPTION = openFrameworks addon for reading and writing CSV (Comma-Separated Values) files
+	ADDON_DESCRIPTION = openFrameworks addon for reading and writing CSV (Character Separated Values) files
 	ADDON_AUTHOR = Paul Vollmer
 	ADDON_TAGS = "utility" "file" "spreadsheet" "CSV"
 	ADDON_URL = https://github.com/paulvollmer/ofxCsv
