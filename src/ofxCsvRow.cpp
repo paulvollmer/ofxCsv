@@ -163,6 +163,11 @@ ostream& operator<<(ostream &ostr, const ofxCsvRow &row) {
 // RAW DATA ACCESS
 
 //--------------------------------------------------
+vector<string>& ofxCsvRow::getData() {
+	return data;
+}
+
+//--------------------------------------------------
 vector<string>::iterator ofxCsvRow::begin() {
 	return data.begin();
 }

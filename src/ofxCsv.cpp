@@ -335,6 +335,11 @@ void ofxCsv::print() {
 // RAW DATA ACCESS
 
 //--------------------------------------------------
+vector<ofxCsvRow>& ofxCsv::getData() {
+	return data;
+}
+
+//--------------------------------------------------
 vector<ofxCsvRow>::iterator ofxCsv::begin() {
 	return data.begin();
 }

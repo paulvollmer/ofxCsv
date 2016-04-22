@@ -146,6 +146,9 @@ class ofxCsvRow {
 	
 	/// \section Raw Data Access
 	
+		/// Get the underlying vector.
+		vector<string>& getData();
+	
 		// iterator wrappers for easy looping:
 		//
 		//     ofxCsvRow row("1,2,3,4");

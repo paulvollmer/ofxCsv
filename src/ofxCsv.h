@@ -252,6 +252,9 @@ class ofxCsv {
 	
 	/// \section Raw Data Access
 	
+		/// Get the underlying vector.
+		vector<ofxCsvRow>& getData();
+	
 		// iterator wrappers for easy looping:
 		//
 		//     ofxCsv csv;
