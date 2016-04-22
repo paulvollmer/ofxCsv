@@ -71,13 +71,16 @@ class ofxCsvRow {
 		void load(vector<string> &cols);
 	
 		/// Expand for the required number of cols.
+		///
 		/// Fills any missing fields with empty strings.
+		///
+		/// \param cols Required number of cols, minimum of 1.
 		void expand(int cols);
 	
 		/// Clear the current row data.
 		void clear();
 	
-	/// \section Data Access
+	/// \section Get Fields
 	
 		/// Get the current number of cols.
 		///
@@ -114,6 +117,11 @@ class ofxCsvRow {
 		/// \param what Value to set
 		void addInt(int what);
 	
+		/// Streams row as a string using the default separator comma ","
+		friend ostream& operator<<(ostream &ostr, const ofxCsvRow &row);
+	
+	/// \section Adding Fields
+	
 		/// Add a float field value to the end of the row.
 		///
 		/// \param what Value to set
@@ -128,6 +136,8 @@ class ofxCsvRow {
 		///
 		/// \param what Value to set
 		void addBool(bool what);
+	
+	/// \section Setting Fields
 	
 		/// Set a field to an integer value.
 		///
@@ -161,10 +171,7 @@ class ofxCsvRow {
 		/// \param what Value to set
 		void setBool(int col, bool what);
 	
-		/// Streams row as a string using the default separator comma ","
-		friend ostream& operator<<(ostream &ostr, const ofxCsvRow &row);
-	
-	/// \section Raw Data Access
+	/// \section Raw Access
 	
 		/// Get the underlying vector.
 		vector<string>& getData();

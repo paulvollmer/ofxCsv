@@ -37,7 +37,7 @@ void ofApp::setup(){
 	ofSetLogLevel("ofxCsv", OF_LOG_VERBOSE); // See what's going on inside.
 	
 	// Load a CSV File.
-	if(csv.load("fil.csv")) {
+	if(csv.load("file.csv")) {
 		//csv.trim(); // Trim leading/trailing whitespace from non-quoted fields.
 		
 		// Like with C++ vectors, the index operator is a quick way to grab row
@@ -55,11 +55,15 @@ void ofApp::setup(){
 	// A safer method is to use the getters which will do a check on the
 	// given row & col indices but will be slightly slower.
 	ofLog() << "Print out the first value";
-	ofLog() << csv.getString(0, 0);
+	ofLog() << csv.getRow(0).getString(0);
 	
+	// Print the table to the console.
 	ofLog() << "Print the table";
-	// Print the table to the console. Uses default separator ",".
-	csv.print();
+	//csv.print(); // Uses default separator ",".
+	// ... or do it manually
+	for(auto row : csv) {
+		ofLog() << ofJoinString(row, "|");
+	}
 }
 
 //--------------------------------------------------------------
@@ -119,15 +123,17 @@ void ofApp::keyPressed(int key){
 	
 	if(key == 's') {
 	
-		// Set/get a specific value as integer, float, string, or bool.
-		csv.setInt(0, 0, 2305);
-		ofLog() << "getInt: " << csv.getInt(0, 0);
-		csv.setFloat(0, 1, 23.666);
-		ofLog() << "getFloat: " << csv.getFloat(0, 1);
-		csv.setString(0, 2, "helloworld");
-		ofLog() << "getString: " << csv.getString(0, 2);
-		csv.setBool(0, 3, true);
-		ofLog() << "getBool: " << csv.getBool(0, 3);
+		// Set/get a specific row value as integer, float, string, or bool
+		// via an ofxCsv row reference.
+		ofxCsvRow& row = csv.getRow(0); // grab
+		row.setInt(0, 2305);
+		ofLog() << "getInt: " << row.getInt(0);
+		row.setFloat(1, 23.666);
+		ofLog() << "getFloat: " << row.getFloat(1);
+		row.setString(2, "helloworld");
+		ofLog() << "getString: " << row.getString(2);
+		row.setBool(3, true);
+		ofLog() << "getBool: " << row.getBool(3);
 		
 		// You can also do this via the ofxCsvRow object.
 		//
@@ -180,7 +186,10 @@ void ofApp::mouseDragged(int x, int y, int button){
 	ofxCsvRow row;
 	row.setInt(0, x);
 	row.setInt(1, y);
-	csvRecorder.addRow(row);
+	csvRecorder.addRow(row); // add to the end
+	//csvRecorder.insertRow(0, row); // insert at the top
+	//csvRecorder.setRow(4, row); // record to the 4th row
+	// csvRecorder.removeRow(0); // remove the first row
 	
 	// Second method by just appending.
 //	csvRecorder.addRow();  // add an empty row

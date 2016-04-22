@@ -38,21 +38,6 @@ setRow(int index, ofxCsvRow row)
 getRow(int index)
 insertRow(int index, ofxCsvRow row)
 removeRow(int index)
-
-getInt(int row, int col)
-getFloat(int row, int col)
-getString(int row, int col)
-getBool(int row, int col)
-
-addInt(int what)
-addFloat(int what)
-addString(int what)
-addBool(int what)
-
-setInt(int row, int col, int what)
-setFloat(int row, int col, float what)
-setString(int row, int col, string what)
-setBool(int row, int col, bool what)
 ~~~
 
 **ofxCsvRow:**

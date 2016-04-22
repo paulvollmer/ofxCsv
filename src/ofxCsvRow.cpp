@@ -80,6 +80,10 @@ void ofxCsvRow::load(vector<string> &cols) {
 
 //--------------------------------------------------
 void ofxCsvRow::expand(int cols) {
+	cols = MAX(cols, 0);
+	if(data.empty()) {
+		cols = MAX(cols, 1);
+	}
 	while(data.size() <= cols) {
 		data.push_back("");
 	}
@@ -90,7 +94,7 @@ void ofxCsvRow::clear() {
 	data.clear();
 }
 
-/// DATA ACCESS
+/// GETTING FIELDS
 
 //--------------------------------------------------
 unsigned int ofxCsvRow::getNumCols() {
@@ -132,6 +136,14 @@ bool ofxCsvRow::getBool(int col) {
 }
 
 //--------------------------------------------------
+ostream& operator<<(ostream &ostr, const ofxCsvRow &row) {
+	ostr << ofxCsvRow::toString(row, ",", false);
+	return ostr;
+}
+
+// ADDING FIELDS
+
+//--------------------------------------------------
 void ofxCsvRow::addInt(int what) {
 	data.push_back(ofToString(what));
 }
@@ -150,6 +162,7 @@ void ofxCsvRow::addString(string what) {
 void ofxCsvRow::ofxCsvRow::addBool(bool what) {
 	data.push_back(ofToString(what));
 }
+// SETTING FIELDS
 
 //--------------------------------------------------
 void ofxCsvRow::setInt(int col, int what) {
@@ -175,13 +188,7 @@ void ofxCsvRow::setBool(int col, bool what) {
 	data[col] = ofToString(what);
 }
 
-//--------------------------------------------------
-ostream& operator<<(ostream &ostr, const ofxCsvRow &row) {
-	ostr << ofxCsvRow::toString(row, ",", false);
-	return ostr;
-}
-
-// RAW DATA ACCESS
+// RAW ACCESS
 
 //--------------------------------------------------
 vector<string>& ofxCsvRow::getData() {

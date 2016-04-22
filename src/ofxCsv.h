@@ -142,6 +142,37 @@ class ofxCsv {
 		/// \param rows Rows to load.
 		void load(vector<vector<string>> &rows);
 	
+		/// Expand for the required number of rows and cols.
+		///
+		/// Fills any missing fields with empty strings.
+		///
+		/// \param rows Required number of rows, minimum of 1.
+		/// \param cols Required number of cols, minimum of 1.
+		void expand(int rows, int cols);
+	
+		/// Clear the current row and column data.
+		void clear();
+	
+	/// \section Row Access
+	
+		/// Get the current number of rows.
+		/// \returns the current number of rows
+		unsigned int getNumRows();
+	
+		/// Get the current number of cols for a given row.
+		///
+		/// \param row Row to get the number of cols for, default 0.
+		/// \returns the number of cols in the given row or 0 if the row does not exist.
+		unsigned int getNumCols(int row=0);
+	
+		/// Get a row at a given positon.
+		///
+		/// Expands to fit the required number of rows.
+		///
+		/// \param index Desired position.
+		/// \returns row 
+		ofxCsvRow& getRow(int index);
+	
 		/// Add a row to the end.
 		///
 		/// \param row Row to append.
@@ -158,12 +189,6 @@ class ofxCsv {
 		/// \param row Row to insert.
 		void setRow(int index, ofxCsvRow &row);
 	
-		/// Get a row at a given positon.
-		///
-		/// \param index Desired position.
-		/// \returns row or empty row if the index is out of bounds.
-		ofxCsvRow getRow(int index);
-	
 		/// Insert a row at a given position.
 		///
 		/// Expands to fit the required number of rows.
@@ -177,118 +202,10 @@ class ofxCsv {
 		/// \param index Position of row to remove.
 		void removeRow(int index);
 	
-		/// Expand for the required number of rows and cols.
-		///
-		/// Fills any missing fields with empty strings.
-		///
-		/// \param rows Number of desired rows.
-		/// \param cols Number of desired columns.
-		void expand(int rows, int cols);
-	
-		/// Clear the current row and column data.
-		void clear();
-	
-	/// \section Data Access
-	
-		/// Get the current number of rows.
-		/// \returns the current number of rows
-		unsigned int getNumRows();
-	
-		/// Get the current number of cols for a given row.
-		///
-		/// \param row Row to get the number of cols for, default 0.
-		/// \returns the number of cols in the given row or 0 if the row does not exist.
-		unsigned int getNumCols(int row=0);
-	
-		/// Get a field as an integer value.
-		///
-		/// \param row Row number
-		/// \param col Column number
-		/// \returns the value or 0 if not found.
-		int getInt(int row, int col);
-	
-		/// Get a field as a float value.
-		///
-		/// \param row Row number
-		/// \param col Column number
-		/// \returns the value or 0.0 if not found.
-		float getFloat(int row, int col);
-	
-		/// Get a field as a string value.
-		///
-		/// \param row Row number
-		/// \param col Column number
-		/// \returns the value or "" if not found.
-		string getString(int row, int col);
-	
-		/// Get a field as a boolean value.
-		///
-		/// \param row Row number
-		/// \param col Column number
-		/// \returns the value or false if not found.
-		bool getBool(int row, int col);
-	
-		/// Add an integer field value to the end of a row.
-		///
-		/// \param what Value to set
-		void addInt(int what);
-	
-		/// Add a float field value to the end of a row.
-		///
-		/// \param what Value to set
-		void addFloat(float what);
-	
-		/// Add a string field value to the end of a row.
-		///
-		/// \param row Row number
-		/// \param what Value to set
-		void addString(string what);
-	
-		/// Add a boolean field value to the end of a row.
-		///
-		/// \param what Value to set
-		void addBool(bool what);
-	
-		/// Set a field to an integer value.
-		///
-		/// Expands number of rows and/or cols to fit required field.
-		///
-		/// \param row Row number
-		/// \param col Column number
-		/// \param what Value to set
-		void setInt(int row, int col, int what);
-	
-		/// Set a field to a float value.
-		///
-		/// Expands number of rows and/or cols to fit required field.
-		///
-		/// \param row Row number
-		/// \param col Column number
-		/// \param what Value to set
-		void setFloat(int row, int col, float what);
-	
-		/// Set a field to a string value.
-		///
-		/// Expands number of rows and/or cols to fit required field.
-		///
-		/// \param row Row number
-		/// \param col Column number
-		/// \param what Value to set
-		void setString(int row, int col, string what);
-	
-		/// Set a field to a boolean value.
-		///
-		/// Expands number of rows and/or cols to fit required field.
-		///
-		/// \param row Row number
-		/// \param col Column number
-		/// \param what Value to set
-		void setBool(int row, int col, bool what);
-	
-		/// Print the current data to the console.
+		/// Print the current rows to the console.
 		void print();
 	
-	/// \section Raw Data Access
+	/// \section Raw Access
 	
 		/// Get the underlying vector.
 		vector<ofxCsvRow>& getData();
