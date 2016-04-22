@@ -241,8 +241,8 @@ size_t ofxCsvRow::size() {
 
 //--------------------------------------------------
 void ofxCsvRow::trim() {
-	for(int col = 0; col < data[col].size(); ++col) {
-		data[col] = std::regex_replace(data[col], s_trimRegex, "$1");
+	for(string &col : data) {
+		col = std::regex_replace(col, s_trimRegex, "$1");
 	}
 }
 

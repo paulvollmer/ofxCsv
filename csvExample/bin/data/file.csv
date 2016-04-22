@@ -9,4 +9,4 @@ ccc1, ccc2, ccc3, ccc4, ccc5, ccc6
 ddd1,ddd2 , ddd3,    ddd4 ,	ddd5,ddd6
 
 # test how quoted separators and double quotes are handled.
-aaa1, "aaa2", "a a, a 3" , "aaa4",      aaa5     , """aaa6""" 
+aaa1, "aaa2", "a a, a 3" , "	aaa4  ",      aaa5     , """aaa6""" 

@@ -39,6 +39,7 @@
 ofxCsv::ofxCsv() {
 	fieldSeparator = ",";
 	commentPrefix = "#";
+	quoteFields = false;
 }
 
 //--------------------------------------------------
@@ -113,7 +114,7 @@ bool ofxCsv::load(string path) {
 }
 
 //--------------------------------------------------
-bool ofxCsv::save(string path, string separator, bool quote) {
+bool ofxCsv::save(string path, bool quote, string separator) {
 	
 	if(path == "") {
 		path = filePath;
@@ -122,10 +123,12 @@ bool ofxCsv::save(string path, string separator, bool quote) {
 		filePath = path;
 	}
 	fieldSeparator = separator;
+	quoteFields = quote;
 	
 	// verbose log print
 	ofLogVerbose("ofxCsv") << "Saving "  << path;
 	ofLogVerbose("ofxCsv") << "  fieldSeparator: " << fieldSeparator;
+	ofLogVerbose("ofxCsv") << "  quoteFields: " << quoteFields;
 	
 	if(data.empty()) {
 		ofLogWarning("ofxCsv") << "Aborting save to " << path << ": data is empty";
@@ -159,13 +162,13 @@ bool ofxCsv::save(string path, string separator, bool quote) {
 }
 
 //--------------------------------------------------
-bool ofxCsv::save(string path, string separator) {
-	return save(path, separator, false);
+bool ofxCsv::save(string path, bool quote) {
+	return save(path, quote, fieldSeparator);
 }
 
 //--------------------------------------------------
 bool ofxCsv::save(string path) {
-	return save(path, fieldSeparator, false);
+	return save(path, false, fieldSeparator);
 }
 
 //--------------------------------------------------
@@ -216,15 +219,15 @@ void ofxCsv::expand(int rows, int cols) {
 	while(data.size() < rows) {
 		data.push_back(ofxCsvRow());
 	}
-	for(auto row : data) {
+	for(auto &row : data) {
 		row.expand(cols-1);
 	}
 }
 
 //--------------------------------------------------
 void ofxCsv::clear() {
-	for(int i = 0; i < data.size(); i++) {
-		data[i].clear();
+	for(auto &row : data) {
+		row.clear();
 	}
 	data.clear();
 }
@@ -249,62 +252,53 @@ unsigned int ofxCsv::getNumCols(int row) {
 //--------------------------------------------------
 int ofxCsv::getInt(int row, int col) {
 	expandRow(row, col);
-	if(data[row][col].empty()) {
-		return 0;
-	}
-	return ofToInt(data[row][col]);
+	return data[row].getInt(col);
 }
 
 //--------------------------------------------------
 float ofxCsv::getFloat(int row, int col) {
 	expandRow(row, col);
-	if(data[row][col].empty()) {
-		return 0.0f;
-	}
-	return ofToFloat(data[row][col]);
+	return data[row].getFloat(col);
 }
 
 //--------------------------------------------------
 string ofxCsv::getString(int row, int col) {
 	expandRow(row, col);
-	return data[row][col];
+	return data[row].getString(col);
 }
 
 //--------------------------------------------------
 bool ofxCsv::getBool(int row, int col) {
 	expandRow(row, col);
-	if(data[row][col].empty()) {
-		return false;
-	}
-	return ofToBool(data[row][col]);
+	return data[row].getBool(col);
 }
 
 //--------------------------------------------------
 void ofxCsv::setInt(int row, int col, int what) {
 	expandRow(row, col);
-	data[row][col] = ofToString(what);
+	data[row].setInt(col, what);
 }
 
 void ofxCsv::setFloat(int row, int col, float what) {
 	expandRow(row, col);
-	data[row][col] = ofToString(what);
+	data[row].setFloat(col, what);
 }
 
 //--------------------------------------------------
 void ofxCsv::setString(int row, int col, string what) {
 	expandRow(row, col);
-	data[row][col] = ofToString(what);
+	data[row].setString(col, what);
 }
 
 //--------------------------------------------------
 void ofxCsv::setBool(int row, int col, bool what) {
 	expandRow(row, col);
-	data[row][col] = ofToString(what);
+	data[row].setBool(col, what);
 }
 
 //--------------------------------------------------
 void ofxCsv::print() {
-	for(auto row : data) {
+	for(auto &row : data) {
 		ofLogNotice("ofxCsv") << row;
 	}
 }
@@ -391,8 +385,8 @@ size_t ofxCsv::size() {
 
 //--------------------------------------------------
 void ofxCsv::trim() {
-	for(auto row : data) {
-		row.trim();
+	for(int row = 0; row < data.size(); row++) {
+		data[row].trim();
 	}
 }
 

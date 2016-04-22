@@ -79,11 +79,14 @@ void ofApp::draw(){
 		}
 	}
 	
-	// Read a CSV row as simple String. Note the quoted separator in one of the fields.
+	// Read a CSV row as simple string.
+	// Note the quoted separator in one of the fields will be preserved.
 	ofDrawBitmapString("CSV VECTOR STRING", 200, 350);
 	ofxCsvRow row("0x11120119][100][40][445][23][543][\"][46\"][24][56][14][964][12", "][");
 	
 	// Print the whole CSV data string to console.
+	// The ofxCsvRow object has access operators, etc so it can be treated as a vector<string>.
+	// Both ofxCsv & ofxCsvRow have iterators to with with for each loops.
 	for(int i = 0; i < row.getNumCols(); i++) {
 		ofDrawBitmapString("[" + ofToString(i) + "]: " + row[i], 200, 370+i*20 );
 	}
@@ -108,7 +111,7 @@ void ofApp::keyPressed(int key){
 	
 	if(key == 's') {
 	
-		// Set a specific value as integer, float, string etc.
+		// Set/get a specific value as integer, float, string, or bool.
 		csv.setInt(0, 0, 2305);
 		ofLog() << "getInt: " << csv.getInt(0, 0);
 		csv.setFloat(0, 1, 23.666);
@@ -118,8 +121,18 @@ void ofApp::keyPressed(int key){
 		csv.setBool(0, 3, true);
 		ofLog() << "getBool: " << csv.getBool(0, 3);
 		
+		// You can also do this via the ofxCsvRow object.
+		csv[0].setInt(0, 2305);
+		ofLog() << "getInt: " << csv[0].getInt(0);
+		csv[0].setFloat(1, 23.666);
+		ofLog() << "getFloat: " << csv[0].getFloat(1);
+		csv[0].setString(2, "helloworld");
+		ofLog() << "getString: " << csv[0].getString(2);
+		csv[0].setBool(3, true);
+		ofLog() << "getBool: " << csv[0].getBool(3);
+		
 		// Save File.
-		csv.save(ofToDataPath("savefile.csv"));
+		csv.save("savefile.csv");
 	}
 	else if(key == 'x') {
 		// Clear all data from csvRecorder.
@@ -136,7 +149,7 @@ void ofApp::keyPressed(int key){
 void ofApp::keyReleased(int key){
 	
 	// Create a new file. Empty until saved to.
-	csv.createFile(ofToDataPath("createfile.csv"));
+	csv.createFile("createfile.csv");
 }
 
 //--------------------------------------------------------------
@@ -150,7 +163,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 	// Add the current cursor position to the mouseData
 	ofxCsvRow row;
 	row.setInt(0, x);
-	row.setInt(0, y);
+	row.setInt(1, y);
 	csvRecorder.add(row);
 }
 

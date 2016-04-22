@@ -35,6 +35,16 @@
 /// \class ofxCsv
 /// \brief table data loaded from & saved to CSV (Character Separated Value) files
 ///
+/// Parsing notes:
+///   * Field whitespace & quoted field whitespace is preserved.
+///   * Leading/trailing whitespace can be trimmed after loading.
+///   * Quoted string quotes are trimmed upon loading, ie. "hello" -> hello
+///   * Quoted quotes from Excel are preserved, ie ""hello"" -> "hello".
+///
+/// Saving notes:
+///   * Fields are saved without quotes by default.
+///   * ALL Fields can be quoted if desired, ie. 1.23 -> "1.23"
+///
 /// See https://en.wikipedia.org/wiki/Comma-separated_values for format info.
 ///
 class ofxCsv {
@@ -82,19 +92,19 @@ class ofxCsv {
 		/// Save a CSV file.
 		///
 		/// \param filePath File path to save.
-		/// \param separator Field separator string, default ",".
 		/// \param quote Should the fields be double quoted? default false.
+		/// \param separator Field separator string, default ",".
 		/// \returns true if file saved successfully
-		bool save(string path, string separator, bool quote);
+		bool save(string path, bool quote, string separator);
 	
 		/// Save a CSV file.
 		///
-		/// Saves the fields without quotes.
+		/// Uses the current field separator.
 		///
 		/// \param filePath File path to save.
-		/// \param separator Field separator string, default ",".
+		/// \param quote Should the fields be double quoted? default false.
 		/// \returns true if file saved successfully
-		bool save(string path, string separator);
+		bool save(string path, bool quote);
 	
 		/// Save a CSV file.
 		///
@@ -341,4 +351,5 @@ class ofxCsv {
 		string filePath;       //< Current file path
 		string fieldSeparator; //< Field separator, default: comma ","
 		string commentPrefix;  //< Comment line prefix, default: "#"
+		bool quoteFields;      //< Save double quoted fields? default false
 };
