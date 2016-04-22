@@ -2,7 +2,6 @@
  *  ofxCsv
  *  Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde)
  *
- *  
  *  The MIT License
  *
  *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
@@ -25,14 +24,8 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  
- *  @testet_oF          0071
- *  @testet_plattform   MacOs 10.6+
- *                      ??? Win
- *                      ??? Linux
- *  @dependencies       
- *  @modified           2012.06.28
- *  @version            0.1.3
+ *  @modified           2015.04.21
+ *  @version            0.2.0
  */
 
 #include "ofApp.h"
@@ -41,15 +34,16 @@
 void ofApp::setup(){
 	
 	ofSetFrameRate(30);
-	ofSetLogLevel("ofxCsv", OF_LOG_VERBOSE); // see what's going on inside
+	ofSetLogLevel("ofxCsv", OF_LOG_VERBOSE); // See what's going on inside.
 	
 	// Load a CSV File.
 	csv.load("file.csv");
+	//csv.trim(); // Trim leading/trailing whitespace from non-quoted fields.
 	
 	ofLog() << "Print out a specific CSV value";
-	ofLog() << csv[0][1];
+	ofLog() << "|" << csv[0][1] << "|";
 	// also you can write...
-	ofLog() << csv[0].at(1) << endl;
+	ofLog() << csv[0].at(1);
 	
 	csv.print();
 	
@@ -73,19 +67,19 @@ void ofApp::draw(){
 	ofDrawBitmapString("csv rows: " + ofToString(csv.getNumRows()), 200, 70);
 	
 	// Check how many column exist.
-	// For that we reat the first line from CSV. (data[0])
-	ofDrawBitmapString("csv cols: " + ofToString(csv[0].size()), 200, 90);
+	// For that we reat the first line from CSV.
+	ofDrawBitmapString("csv cols: " + ofToString(csv.getNumCols(0)), 200, 90);
 	
 	// Print out all rows and cols.
 	for(int i = 0; i < csv.getNumRows(); i++) {
-		for(int j = 0; j < csv[i].size(); j++) {
+		for(int j = 0; j < csv.getNumCols(i); j++) {
 			ofDrawBitmapString(csv[i][j], 200+j*100, 150+i*20);
 		}
 	}
 	
-	// Read a CSV row as simple String.
+	// Read a CSV row as simple String. Note the quoted separator in one of the fields.
 	ofDrawBitmapString("CSV VECTOR STRING", 200, 350);
-	vector<string> dataExample = csv.getFromString("0x11120119][100][40][445][23][543][46][24][56][14][964][12", "][");
+	vector<string> dataExample = csv.fromRowString("0x11120119][100][40][445][23][543][\"][46\"][24][56][14][964][12", "][");
 	
 	// Print the whole CSV data string to console.
 	for(int i = 0; i < dataExample.size(); i++) {

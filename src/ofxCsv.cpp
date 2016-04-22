@@ -2,7 +2,6 @@
  *  ofxCsv.cpp
  *  Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde)
  *
- *  
  *  The MIT License
  *
  *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
@@ -26,21 +25,17 @@
  *  THE SOFTWARE.
  *
  *  
- *  @testet_oF          0071
- *  @testet_plattform   MacOs 10.6+
- *                      ??? Win
- *                      ??? Linux
- *  @dependencies       
- *  @modified           2012.06.28
- *  @version            0.1.3
+ *  @modified           2015.04.21
+ *  @version            0.2.0
  */
 
 #include "ofxCsv.h"
 
 #include <regex>
 
-/// whitespace leading & trailing trim regular expression
-static std::regex s_trimRegex = std::regex("^ +| +$|( ) +");
+/// whitespace leading & trailing trim regular expression, from:
+// http://stackoverflow.com/questions/24048400/function-to-trim-leading-and-trailing-whitespace-in-vba
+static std::regex s_trimRegex = std::regex("^[\\s]+|[\\s]+$");
 
 namespace wng {
 
@@ -91,7 +86,7 @@ bool ofxCsv::load(string path, string separator, string comment) {
 		}
 		
 		// split line into separate files
-		vector<string> cols = getFromString(line, separator);
+		vector<string> cols = fromRowString(line, separator);
 		data.push_back(cols);
 	
 		// calc maxium table cols
@@ -122,7 +117,7 @@ bool ofxCsv::load(string path) {
 }
 
 //--------------------------------------------------
-bool ofxCsv::save(string path, string separator) {
+bool ofxCsv::save(string path, string separator, bool quote) {
 	
 	if(path == "") {
 		path = filePath;
@@ -153,7 +148,7 @@ bool ofxCsv::save(string path, string separator) {
 	ofBuffer buffer;
 	int lineCount = 0;
 	for(auto row : data) {
-		buffer.append(ofJoinString(row, fieldSeparator)+"\n");
+		buffer.append(toRowString(row, fieldSeparator, quote)+"\n");
 		lineCount++;
 	}
 	if(!ofBufferToFile(path, buffer)) {
@@ -168,8 +163,13 @@ bool ofxCsv::save(string path, string separator) {
 }
 
 //--------------------------------------------------
+bool ofxCsv::save(string path, string separator) {
+	return save(path, separator, false);
+}
+
+//--------------------------------------------------
 bool ofxCsv::save(string path) {
-	return save(path, fieldSeparator);
+	return save(path, fieldSeparator, false);
 }
 
 //--------------------------------------------------
@@ -203,7 +203,7 @@ unsigned int ofxCsv::getNumRows() {
 
 //--------------------------------------------------
 unsigned int ofxCsv::getNumCols(int row) {
-	if(row > 0 && row < data.size()) {
+	if(row > -1 && row < data.size()) {
 		return data[row].size();
 	}
 	ofLogWarning("ofxCsv") << "Cannot get num cols for row " << row
@@ -326,35 +326,143 @@ vector<string>& ofxCsv::at(size_t index) {
 	return data.at(index);
 }
 
+//--------------------------------------------------
+size_t ofxCsv::size() {
+	return data.size();
+}
+
 // UTIL
 
 //--------------------------------------------------
-vector<string> ofxCsv::getFromString(string row, string separator) {
-
-	// split into columns using field separator
-	vector<string> cols = ofSplitString(row, separator);
-	for(int i = 0; i < cols.size(); ++i) {
-	
-		// strip leading & trailing whitespace
-		string field = std::regex_replace(cols[i], s_trimRegex, "$1");
-		
-		// strip double quotes
-		if(field == "\"\"") {
-			field = "";
+void ofxCsv::trim() {
+	for(int row = 0; row < data.size(); ++row) {
+		for(int col = 0; col < data[col].size(); ++col) {
+			data[row][col] = std::regex_replace(data[row][col], s_trimRegex, "$1");
 		}
-		else if(field.find_first_of('\"') == 0 && field.find_last_of('\"') == field.length()-1) {
-			field = field.substr(1, field.length()-2);
-		}
-		
-		// put back in
-		cols[i] = field;
 	}
-	return cols;
 }
 
 //--------------------------------------------------
-vector<string> ofxCsv::getFromString(string row) {
-	return getFromString(row, fieldSeparator);
+
+enum ParseState {
+	UnquotedField, // a regular field: hello
+    QuotedField,   // a quoted field: "hello"
+    QuotedQuote,   // quote inside a quoted field: ""hello""
+	Separator      // a char in the separator string
+};
+
+// parse a CSV row string char by char using a state machine
+// handles separators inside quotes & Excel's double quoted quotes, adapted from:
+// http://stackoverflow.com/questions/1120140/how-can-i-read-and-parse-csv-files-in-c/1595366#1595366
+vector<string> ofxCsv::fromRowString(string row, string separator) {
+	
+	ParseState state = UnquotedField;
+    vector<string> fields {""};
+	
+	size_t i = 0; // index of the current field
+	int s = 0; // index in the separator
+	
+	// separator char tracking
+	char sepStart = ','; // default
+	if(!separator.empty()) {
+		sepStart = separator[0];
+	}
+	
+	// parse char by char, perhaps less efficient but catches more end cases
+	// than a simple ofSplitString()
+    for(char c : row) {
+        switch(state) {
+			case Separator:
+				s++; // go to next separator character
+				if(s > separator.size()-1) { // end of separator
+					s = 0;
+					state = UnquotedField;
+				}
+				else if(c != separator[s]) { // woops, wasn't a separator after all
+					s = 0;
+					state = UnquotedField;
+				}
+				else {
+					// eat this char
+					break;
+				}
+            case UnquotedField:
+                switch(c) {
+                    case '"':
+						state = QuotedField;
+						break;
+                    default:
+						if(c == sepStart) { // end of field
+							fields.push_back("");
+							i++;
+							state = Separator;
+						}
+						else {
+							fields[i] += c;
+						}
+						break;
+				}
+                break;
+            case QuotedField:
+                switch(c) {
+                    case '"':
+						state = QuotedQuote;
+						break;
+                    default:
+						fields[i] += c;
+						break;
+				}
+                break;
+            case QuotedQuote:
+                switch(c) {
+                    case '"': // "" -> "
+						fields[i] += '"';
+						state = QuotedField;
+						break;
+                    default:
+						if(c == sepStart) { // end of field, after closing quote
+							fields.push_back("");
+							i++;
+							state = Separator;
+						}
+						else { // end of quote
+							state = UnquotedField;
+						}
+						break;
+				}
+                break;
+        }
+    }
+    return fields;
+}
+
+//--------------------------------------------------
+vector<string> ofxCsv::fromRowString(string row) {
+	return fromRowString(row, fieldSeparator);
+}
+
+//--------------------------------------------------
+string ofxCsv::toRowString(vector<string> row, string separator, bool quote) {
+	if(quote) { // quote field
+		vector<string> fields;
+		for(auto field : row) {
+			fields.push_back("\""+field+"\"");
+		}
+		return ofJoinString(fields, separator);
+	}
+	else { // no quotes
+		return ofJoinString(row, separator);
+	}
+}
+
+//--------------------------------------------------
+string ofxCsv::toRowString(vector<string> row, string separator) {
+	return toRowString(row, separator, false);
+}
+
+//--------------------------------------------------
+string ofxCsv::toRowString(vector<string> row) {
+	return toRowString(row, fieldSeparator, false);
 }
 
 //--------------------------------------------------
@@ -376,11 +484,11 @@ string ofxCsv::getCommentPrefix() {
 
 //--------------------------------------------------
 void ofxCsv::expandData(int rows, int cols) {
-	while(data.size() < rows+1) {
+	while(data.size() < rows) {
 		data.push_back(vector<string>());
 	}
 	for(auto row : data) {
-		while(row.size() < cols+1) {
+		while(row.size() < cols) {
 			row.push_back("");
 		}
 	}
@@ -388,10 +496,10 @@ void ofxCsv::expandData(int rows, int cols) {
 
 //--------------------------------------------------
 void ofxCsv::expandRow(int row, int cols) {
-	while(data.size() < row+1) {
+	while(data.size() <= row) {
 		data.push_back(vector<string>());
 	}
-	while(data[row].size() < cols+1) {
+	while(data[row].size() <= cols) {
 		data[row].push_back("");
 	}
 }

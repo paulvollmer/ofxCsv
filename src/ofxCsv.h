@@ -2,7 +2,6 @@
  *  ofxCsv.h
  *  Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde)
  *
- *  
  *  The MIT License
  *
  *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
@@ -25,14 +24,8 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  
- *  @testet_oF          0071
- *  @testet_plattform   MacOs 10.6+
- *                      ??? Win
- *                      ??? Linux
- *  @dependencies       
- *  @modified           2012.06.28
- *  @version            0.1.3
+ *  @modified           2015.04.21
+ *  @version            0.2.0
  */
 
 #pragma once
@@ -85,7 +78,15 @@ class ofxCsv {
 	
 		/// Save a CSV file.
 		///
-		/// Uses the current field separator.
+		/// \param filePath File path to save.
+		/// \param separator Field separator string, default ",".
+		/// \param quote Should the fields be double quoted? default false.
+		/// \returns true if file saved successfully
+		bool save(string path, string separator, bool quote);
+	
+		/// Save a CSV file.
+		///
+		/// Saves the fields without quotes.
 		///
 		/// \param filePath File path to save.
 		/// \param separator Field separator string, default ",".
@@ -94,7 +95,7 @@ class ofxCsv {
 	
 		/// Save a CSV file.
 		///
-		/// Uses the current field separator.
+		/// Uses the current field separator & saves the fields without quotes.
 		///
 		/// \param path File path to save. Leave empty to save current file.
 		/// \returns true if file saved successfully
@@ -102,7 +103,7 @@ class ofxCsv {
 	
 		/// Create an empty CSV file.
 		///
-		/// \param filePath File path to create. Sets current file path.
+		/// \param path File path to create. Sets current file path.
 		/// \returns true if file saved successfully
 		bool createFile(string path);
 	
@@ -224,14 +225,20 @@ class ofxCsv {
 		/// Raw string data access via index.
 		vector<string>& at(size_t index);
 	
+		/// Alternate row size getter.
+		size_t size();
+	
 	/// \section Util
+	
+		/// Trim leading & trailing whitespace from all non-quoted fields.
+		void trim();
 	
 		/// Split a row string into fields.
 		///
 		/// \param row Row string to split.
 		/// \param separator Field separator string, default ",".
 		/// \returns String vector of fields.
-		vector<string> getFromString(string row, string separator);
+		vector<string> fromRowString(string row, string separator);
 	
 		/// Split a row string into fields.
 		///
@@ -239,7 +246,32 @@ class ofxCsv {
 		///
 		/// \param row Row string to split.
 		/// \returns String vector of fields.
-		vector<string> getFromString(string row);
+		vector<string> fromRowString(string row);
+	
+		/// Join a row of separate column fields into a single string.
+		///
+		/// \param row Fields to join.
+		/// \param separator Field separator string, default ",".
+		/// \param quote Should the fields be double quoted? default false.
+		/// \returns The row as a single string.
+		string toRowString(vector<string> row, string separator, bool quote);
+	
+		/// Join a row of separate column fields into a single string.
+		///
+		/// Quotes the fields.
+		///
+		/// \param row Fields to join.
+		/// \param separator Field separator string, default ",".
+		/// \returns The row as a single string.
+		string toRowString(vector<string> cols, string separator);
+	
+		/// Join a row of separate column fields into a single string.
+		///
+		/// Uses the current field separator & does not quote the fields.
+		///
+		/// \param row Fields to join.
+		/// \returns The row as a single string.
+		string toRowString(vector<string> cols);
 	
 		/// Get the current file path.
 		string getPath();

@@ -1,5 +1,12 @@
 # This is our example csv file.
+
 # This comment is test. to check if a comment will be ignored.
 var1, var2, var3, var4, var5, var6
 wng1, wng2, wng3, wng4, wng5, wng6
 ccc1, ccc2, ccc3, ccc4, ccc5, ccc6
+
+# Test how spaces & tabsare handled.
+ddd1,ddd2 , ddd3,    ddd4 ,	ddd5,ddd6
+
+# test how quoted separators and double quotes are handled.
+aaa1, "aaa2", "a a, a 3" , "aaa4",      aaa5     , """aaa6""" 
