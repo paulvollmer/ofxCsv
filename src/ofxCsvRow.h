@@ -41,7 +41,7 @@ class ofxCsvRow {
 		/// Constructor. Initializes and starts the class.
 		ofxCsvRow();
 	
-		/// Create & load from a string with optional field eparator.
+		/// Create & load from a string with optional field separator.
 		ofxCsvRow(string cols, string separator=",");
 	
 		/// Create & load from a vector.
@@ -60,7 +60,7 @@ class ofxCsvRow {
 		/// Clears any currently loaded data.
 		///
 		/// \param cols Column string to load.
-		/// \param separator Optional field separator, default ","
+		/// \param separator Optional field separator, default comma ",".
 		void load(string cols, string separator=",");
 	
 		/// Load from a vector of col strings.
@@ -81,7 +81,7 @@ class ofxCsvRow {
 	
 		/// Get the current number of cols.
 		///
-		/// \param row Row to get the number of cols for, default: 0.
+		/// \param row Row to get the number of cols for, default 0.
 		/// \returns the number of cols in the given row or 0 if the row does not exist.
 		unsigned int getNumCols();
 	
@@ -141,7 +141,7 @@ class ofxCsvRow {
 		/// \param what Value to set
 		void setBool(int col, bool what);
 	
-		/// Streams row as a string using the default separator ","
+		/// Streams row as a string using the default separator comma ","
 		friend ostream& operator<<(ostream &ostr, const ofxCsvRow &row);
 	
 	/// \section Raw Data Access
@@ -188,14 +188,14 @@ class ofxCsvRow {
 		/// Split a row string into fields.
 		///
 		/// \param row Row string to split.
-		/// \param separator Field separator string, default ",".
+		/// \param separator Field separator string, default comma ",".
 		/// \returns String vector of fields.
 		static vector<string> fromString(string row, string separator);
 	
 		/// Join a row of separate column fields into a single string.
 		///
 		/// \param row Fields to join.
-		/// \param separator Field separator string, default ",".
+		/// \param separator Field separator string, default comma ",".
 		/// \param quote Should the fields be double quoted? default false.
 		/// \returns The row as a single string.
 		static string toString(vector<string> row, string separator, bool quote);

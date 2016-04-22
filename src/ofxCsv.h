@@ -62,7 +62,7 @@ class ofxCsv {
 		/// fieldSeparator, & commentPrefix.
 		///
 		/// \param path File path to load.
-		/// \param separator Field separator string, default ",".
+		/// \param separator Field separator string, default comma ",".
 		/// \param comment Comment line prefix string, default "#".
 		/// \returns true if file loaded successfully
 		bool load(string path, string separator, string comment);
@@ -75,7 +75,7 @@ class ofxCsv {
 		/// Uses the current comment line prefix string.
 		///
 		/// \param path File path to load.
-		/// \param separator Field separator string, default ",".
+		/// \param separator Field separator string, default comma ",".
 		/// \returns true if file loaded successfully
 		bool load(string path, string separator);
 	
@@ -93,7 +93,7 @@ class ofxCsv {
 		///
 		/// \param filePath File path to save.
 		/// \param quote Should the fields be double quoted? default false.
-		/// \param separator Field separator string, default ",".
+		/// \param separator Field separator string, default comma ",".
 		/// \returns true if file saved successfully
 		bool save(string path, bool quote, string separator);
 	
@@ -173,7 +173,7 @@ class ofxCsv {
 	
 		/// Get the current number of cols for a given row.
 		///
-		/// \param row Row to get the number of cols for, default: 0.
+		/// \param row Row to get the number of cols for, default 0.
 		/// \returns the number of cols in the given row or 0 if the row does not exist.
 		unsigned int getNumCols(int row=0);
 	
@@ -289,7 +289,7 @@ class ofxCsv {
 		/// Split a row string into fields.
 		///
 		/// \param row Row string to split.
-		/// \param separator Field separator string, default ",".
+		/// \param separator Field separator string, default comma ",".
 		/// \returns String vector of fields.
 		vector<string> fromRowString(string row, string separator);
 	
@@ -304,7 +304,7 @@ class ofxCsv {
 		/// Join a row of separate column fields into a single string.
 		///
 		/// \param row Fields to join.
-		/// \param separator Field separator string, default ",".
+		/// \param separator Field separator string, default comma ",".
 		/// \param quote Should the fields be double quoted? default false.
 		/// \returns The row as a single string.
 		string toRowString(vector<string> row, string separator, bool quote);
@@ -314,7 +314,7 @@ class ofxCsv {
 		/// Quotes the fields.
 		///
 		/// \param row Fields to join.
-		/// \param separator Field separator string, default ",".
+		/// \param separator Field separator string, default comma ",".
 		/// \returns The row as a single string.
 		string toRowString(vector<string> cols, string separator);
 	
@@ -329,11 +329,14 @@ class ofxCsv {
 		/// Get the current file path.
 		string getPath();
 	
-		/// Get the field seaprator, default: comma ","
+		/// Get the field seaprator, default comma ",".
 		string getFieldSeparator();
 	
-		/// Get the current comment line prefix, default: "#"
+		/// Get the current comment line prefix, default "#".
 		string getCommentPrefix();
+	
+		/// Get whether fields should be quoted when saving, default false.
+		bool getQuoteFields();
 	
 	protected:
 	
