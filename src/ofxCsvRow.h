@@ -185,6 +185,10 @@ class ofxCsvRow {
 		/// Trim leading & trailing whitespace from all non-quoted fields.
 		void trim();
 	
+		/// Trim leading & trailing whitespace from a string.
+		/// \returns trimmed string
+		static string trimString(string s);
+	
 		/// Split a row string into fields.
 		///
 		/// \param row Row string to split.

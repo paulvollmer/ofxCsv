@@ -247,6 +247,11 @@ void ofxCsvRow::trim() {
 }
 
 //--------------------------------------------------
+string trimString(string s) {
+	return std::regex_replace(s, s_trimRegex, "$1");
+}
+
+//--------------------------------------------------
 
 enum ParseState {
 	UnquotedField, // a regular field: hello
