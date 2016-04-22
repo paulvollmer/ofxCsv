@@ -49,7 +49,7 @@ setString(int col, string what)
 setBool(int col, bool what) 
 ~~~
 
-See `src/ofxCsv.h` for detailed information & additional functionality.
+See `src/ofxCsv.h` & `src/ofxCsv.cpp` for detailed information & additional functionality.
 
 Installation & Usage
 --------------------

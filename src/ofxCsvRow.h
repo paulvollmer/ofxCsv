@@ -148,10 +148,9 @@ class ofxCsvRow {
 	
 		// iterator wrappers for easy looping:
 		//
-		//     ofxCsv csv;
-		//     csv.load("file.csv");
-		//     for(auto row : csv) {
-		//       // do something for each row
+		//     ofxCsvRow row("1,2,3,4");
+		//     for(auto col : row) {
+		//       // do something for each col
 		//     }
 		//
 		vector<string>::iterator begin();

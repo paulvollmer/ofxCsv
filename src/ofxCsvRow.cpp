@@ -248,8 +248,8 @@ void ofxCsvRow::trim() {
 
 enum ParseState {
 	UnquotedField, // a regular field: hello
-    QuotedField,   // a quoted field: "hello"
-    QuotedQuote,   // quote inside a quoted field: ""hello""
+	QuotedField,   // a quoted field: "hello"
+	QuotedQuote,   // quote inside a quoted field: ""hello""
 	Separator      // a char in the separator string
 };
 
@@ -259,7 +259,7 @@ enum ParseState {
 vector<string> ofxCsvRow::fromString(string row, string separator) {
 	
 	ParseState state = UnquotedField;
-    vector<string> fields {""};
+	vector<string> fields {""};
 	
 	size_t i = 0; // index of the current field
 	int s = 0; // index in the separator
@@ -272,8 +272,8 @@ vector<string> ofxCsvRow::fromString(string row, string separator) {
 	
 	// parse char by char, perhaps less efficient but catches more end cases
 	// than a simple ofSplitString()
-    for(char c : row) {
-        switch(state) {
+	for(char c : row) {
+		switch(state) {
 			case Separator:
 				s++; // go to next separator character
 				if(s > separator.size()-1) { // end of separator
@@ -288,12 +288,12 @@ vector<string> ofxCsvRow::fromString(string row, string separator) {
 					// eat this char
 					break;
 				}
-            case UnquotedField:
-                switch(c) {
-                    case '"':
+			case UnquotedField:
+				switch(c) {
+					case '"':
 						state = QuotedField;
 						break;
-                    default:
+					default:
 						if(c == sepStart) { // end of field
 							fields.push_back("");
 							i++;
@@ -304,24 +304,24 @@ vector<string> ofxCsvRow::fromString(string row, string separator) {
 						}
 						break;
 				}
-                break;
-            case QuotedField:
-                switch(c) {
-                    case '"':
+				break;
+			case QuotedField:
+				switch(c) {
+					case '"':
 						state = QuotedQuote;
 						break;
-                    default:
+					default:
 						fields[i] += c;
 						break;
 				}
-                break;
-            case QuotedQuote:
-                switch(c) {
-                    case '"': // "" -> "
+				break;
+			case QuotedQuote:
+				switch(c) {
+					case '"': // "" -> "
 						fields[i] += '"';
 						state = QuotedField;
 						break;
-                    default:
+					default:
 						if(c == sepStart) { // end of field, after closing quote
 							fields.push_back("");
 							i++;
@@ -332,10 +332,10 @@ vector<string> ofxCsvRow::fromString(string row, string separator) {
 						}
 						break;
 				}
-                break;
-        }
-    }
-    return fields;
+				break;
+		}
+	}
+	return fields;
 }
 
 //--------------------------------------------------
