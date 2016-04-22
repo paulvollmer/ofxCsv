@@ -19,6 +19,7 @@ API Overview
 
 A quick overview:
 
+**ofxCsv**:
 ~~~
 loadFile(string path, string separator, string comment)  
 loadFile(string path, string separator)  
@@ -27,6 +28,7 @@ saveFile(string path, string separator, bool quote)
 saveFile(string path, string separator)  
 saveFile(string path)
 createFile(string path)  
+add(ofxCsvRow row)
 getInt(int row, int col)  
 getFloat(int row, int col)  
 getString(int row, int col)  
@@ -35,6 +37,18 @@ setInt(int row, int col, int what)
 setFloat(int row, int col, float what)  
 setString(int row, int col, string what)  
 setBool(int row, int col, bool what)    
+~~~
+
+**ofxCsvRow:**
+~~~
+getInt(int col)  
+getFloat(int col)  
+getString(int col)  
+getBool(int col)  
+setInt(int col, int what)  
+setFloat(int col, float what)  
+setString(int col, string what)  
+setBool(int col, bool what) 
 ~~~
 
 See `src/ofxCsv.h` for detailed information.
@@ -62,7 +76,7 @@ Changelog
 
 A detailed changelog, intended for programmers.  
 
-0.2.0
+0.2.0  
 partial rewrite & update to OF 0.9+, added ofxCsvRow
 
 0.1.3  
