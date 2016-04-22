@@ -432,6 +432,11 @@ string ofxCsv::getCommentPrefix() {
 	return commentPrefix;
 }
 
+//--------------------------------------------------
+bool ofxCsv::getQuoteFields() {
+	return quoteFields;
+}
+
 // PROTECTED
 
 //--------------------------------------------------
