@@ -14,10 +14,8 @@ Current Version
 
 0.2.0 (stable and versioned using [semantic versioning](http://semver.org))
 
-API Overview
+Quick API Overview
 ------------
-
-A quick overview:
 
 **ofxCsv**:
 ~~~
@@ -51,7 +49,7 @@ setString(int col, string what)
 setBool(int col, bool what) 
 ~~~
 
-See `src/ofxCsv.h` for detailed information.
+See `src/ofxCsv.h` for detailed information & additional functionality.
 
 Installation & Usage
 --------------------
