@@ -134,7 +134,7 @@ void ofApp::keyPressed(int key){
 		// We do a check here since we're using the index operator which will
 		// cause a crash if the row doesn't exist, ie. the file didn't load.
 		//
-		// (Although in this case, the row data is gauranteed to exist since
+		// (Although in this case, the row data is guaranteed to exist since
 		// the set methods above will create them, if needed.)
 		if(csv.getNumRows() > 0) {
 			csv[0].setInt(0, 2305);

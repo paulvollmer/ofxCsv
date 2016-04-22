@@ -339,7 +339,7 @@ class ofxCsv {
 		/// Get the current file path.
 		string getPath();
 	
-		/// Get the field seaprator, default comma ",".
+		/// Get the field separator, default comma ",".
 		string getFieldSeparator();
 	
 		/// Get the current comment line prefix, default "#".
