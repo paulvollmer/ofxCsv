@@ -42,11 +42,7 @@
 
 using namespace wng;
 
-
-
-
-
-class testApp : public ofBaseApp{
+class ofApp : public ofBaseApp{
 
 	public:
 		void setup();
@@ -67,5 +63,4 @@ class testApp : public ofBaseApp{
 		ofxCsv csvRecorder;
 	
 		bool recordingMouse;
-		
 };

@@ -17,17 +17,15 @@ Current Version
 API Overview
 ------------
 
+A quick overview:
+
 ~~~
-loadFile(string path, string separator, string comments)  
+loadFile(string path, string separator, string comment)  
 loadFile(string path, string separator)  
-loadFile(string path)  
-saveFile(string path, string separator, string comments)  
+loadFile(string path)   
 saveFile(string path, string separator)  
-saveFile(string path)  
-saveFile()  
+saveFile(string path)
 createFile(string path)  
-vector<string> getFromString(string s, string separator)  
-vector<string> getFromString(string s)  
 getInt(int row, int col)  
 getFloat(int row, int col)  
 getString(int row, int col)  
@@ -35,8 +33,12 @@ getBool(int row, int col)
 setInt(int row, int col, int what)  
 setFloat(int row, int col, float what)  
 setString(int row, int col, string what)  
-setBool(int row, int col, bool what)  
+setBool(int row, int col, bool what) 
+vector<string> getFromString(string s, string separator)  
+vector<string> getFromString(string s)   
 ~~~
+
+See `src/ofxCsv.h` for detailed information.
 
 Installation & Usage
 --------------------
@@ -81,7 +83,6 @@ Contributors
 - [hiroyuki](https://github.com/hiroyuki) hori.hiroyuki@gmail.com
 - [ofCinzio](https://github.com/ofCinzio) matteocinzio@tiscali.it
 - [Stephen Pinkerton](https://github.com/Pinkerton) stephen@spinkerton.org
-
 
 License 
 -------
