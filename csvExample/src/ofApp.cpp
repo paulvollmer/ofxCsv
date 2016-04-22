@@ -176,11 +176,16 @@ void ofApp::mouseMoved(int x, int y ){
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){	
 	
-	// Add the current cursor position to the mouseData
+	// Add the current cursor position to the mouseData.
 	ofxCsvRow row;
 	row.setInt(0, x);
 	row.setInt(1, y);
-	csvRecorder.add(row);
+	csvRecorder.addRow(row);
+	
+	// Second method by just appending.
+//	csvRecorder.addRow();  // add an empty row
+//	csvRecorder.addInt(x); // add col
+//	csvRecorder.addInt(y); // add col
 }
 
 //--------------------------------------------------------------

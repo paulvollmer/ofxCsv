@@ -14,39 +14,66 @@ Current Version
 
 0.2.0 (stable and versioned using [semantic versioning](http://semver.org))
 
-Quick API Overview
-------------
+Basic API Overview
+------------------
 
 **ofxCsv**:
 ~~~
-loadFile(string path, string separator, string comment)  
-loadFile(string path, string separator)  
-loadFile(string path)   
-saveFile(string path, bool quote, string separator)
-saveFile(string path, bool quote)  
-saveFile(string path)
-createFile(string path)  
-add(ofxCsvRow row)
-getInt(int row, int col)  
-getFloat(int row, int col)  
-getString(int row, int col)  
-getBool(int row, int col)  
-setInt(int row, int col, int what)  
-setFloat(int row, int col, float what)  
-setString(int row, int col, string what)  
-setBool(int row, int col, bool what)    
+load(string path, string separator, string comment)
+load(string path, string separator)
+load(string path)
+
+load(vector<ofxCsvRow> rows)
+load(vector<string> rows)
+
+save(string path, bool quote, string separator)
+save(string path, bool quote)
+save(string path)
+
+createFile(string path)
+
+addRow(ofxCsvRow row)
+addRow()
+setRow(int index, ofxCsvRow row)
+getRow(int index)
+insertRow(int index, ofxCsvRow row)
+removeRow(int index)
+
+getInt(int row, int col)
+getFloat(int row, int col)
+getString(int row, int col)
+getBool(int row, int col)
+
+addInt(int what)
+addFloat(int what)
+addString(int what)
+addBool(int what)
+
+setInt(int row, int col, int what)
+setFloat(int row, int col, float what)
+setString(int row, int col, string what)
+setBool(int row, int col, bool what)
 ~~~
 
 **ofxCsvRow:**
 ~~~
-getInt(int col)  
-getFloat(int col)  
-getString(int col)  
-getBool(int col)  
-setInt(int col, int what)  
-setFloat(int col, float what)  
-setString(int col, string what)  
-setBool(int col, bool what) 
+load(string cols, string separator)
+load(vector<string> cols)
+
+getInt(int col)
+getFloat(int col)
+getString(int col)
+getBool(int col)
+
+addInt(int what)
+addFloat(int what)
+addString(int what)
+addBool(int what)
+
+setInt(int col, int what)
+setFloat(int col, float what)
+setString(int col, string what)
+setBool(int col, bool what)
 ~~~
 
 See `src/ofxCsv.h` & `src/ofxCsv.cpp` for detailed information & additional functionality.

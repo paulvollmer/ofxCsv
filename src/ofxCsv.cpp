@@ -218,22 +218,50 @@ void ofxCsv::load(vector<vector<string>> &rows) {
 }
 
 //--------------------------------------------------
-void ofxCsv::add(ofxCsvRow &row) {
+void ofxCsv::addRow(ofxCsvRow &row) {
 	data.push_back(row);
 }
 
 //--------------------------------------------------
-void ofxCsv::insert(ofxCsvRow &row, int index) {
-	int cols = getNumCols();
-	if(index > data.size()) {
-		expand(index-1, cols);
-	}
-	data.insert(data.begin()+index, row);
-	data[index].expand(cols);
+void ofxCsv::addRow() {
+	data.push_back(ofxCsvRow());
 }
 
 //--------------------------------------------------
-void ofxCsv::remove(int index) {
+void ofxCsv::setRow(int index, ofxCsvRow &row) {
+	int r = index;
+	int c = getNumCols()-1;
+	if(data.empty() && index <= 0) {
+		r = 1;
+		c = 1;
+	}
+	expand(r, c);
+	data[index] = row;
+}
+	
+//--------------------------------------------------
+ofxCsvRow ofxCsv::getRow(int index) {
+	if(index >= data.size()) {
+		return ofxCsvRow();
+	}
+	return data[index];
+}
+
+//--------------------------------------------------
+void ofxCsv::insertRow(int index, ofxCsvRow &row) {
+	int c = getNumCols()-1;
+	int r = index;
+	if(data.empty() && index <= 0) {
+		r = 1;
+		c = 1;
+	}
+	expand(index, c);
+	data.insert(data.begin()+index, row);
+	data[index].expand(c);
+}
+
+//--------------------------------------------------
+void ofxCsv::removeRow(int index) {
 	data.erase(data.begin()+index);
 }
 
@@ -303,11 +331,44 @@ bool ofxCsv::getBool(int row, int col) {
 }
 
 //--------------------------------------------------
+void ofxCsv::addInt(int what) {
+	if(data.empty()) {
+		addRow();
+	}
+	data.back().addInt(what);
+}
+
+//--------------------------------------------------
+void ofxCsv::addFloat(float what) {
+	if(data.empty()) {
+		addRow();
+	}
+	data.back().addFloat(what);
+}
+
+//--------------------------------------------------
+void ofxCsv::addString(string what) {
+	if(data.empty()) {
+		addRow();
+	}
+	data.back().addString(what);
+}
+
+//--------------------------------------------------
+void ofxCsv::addBool(bool what) {
+	if(data.empty()) {
+		addRow();
+	}
+	data.back().addBool(what);
+}
+
+//--------------------------------------------------
 void ofxCsv::setInt(int row, int col, int what) {
 	expandRow(row, col);
 	data[row].setInt(col, what);
 }
 
+//--------------------------------------------------
 void ofxCsv::setFloat(int row, int col, float what) {
 	expandRow(row, col);
 	data[row].setFloat(col, what);

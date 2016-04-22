@@ -109,7 +109,27 @@ class ofxCsvRow {
 		/// \returns the value or false if not found.
 		bool getBool(int col);
 	
-		//// Set a field to an integer value.
+		/// Add an integer field value to the end of the row.
+		///
+		/// \param what Value to set
+		void addInt(int what);
+	
+		/// Add a float field value to the end of the row.
+		///
+		/// \param what Value to set
+		void addFloat(float what);
+	
+		/// Add a string field value to the end of the row.
+		///
+		/// \param what Value to set
+		void addString(string what);
+	
+		/// Add a boolean field value to the end of the row.
+		///
+		/// \param what Value to set
+		void addBool(bool what);
+	
+		/// Set a field to an integer value.
 		///
 		/// Expands number of cols to fit required field.
 		///
@@ -117,7 +137,7 @@ class ofxCsvRow {
 		/// \param what Value to set
 		void setInt(int col, int what);
 	
-		//// Set a field to a float value.
+		/// Set a field to a float value.
 		///
 		/// Expands number of cols to fit required field.
 		///
@@ -125,7 +145,7 @@ class ofxCsvRow {
 		/// \param what Value to set
 		void setFloat(int col, float what);
 	
-		//// Set a field to a string value.
+		/// Set a field to a string value.
 		///
 		/// Expands number of cols to fit required field.
 		///
@@ -133,7 +153,7 @@ class ofxCsvRow {
 		/// \param what Value to set
 		void setString(int col, string what);
 	
-		//// Set a field to a boolean value.
+		/// Set a field to a boolean value.
 		///
 		/// Expands number of cols to fit required field.
 		///

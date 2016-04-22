@@ -132,11 +132,32 @@ bool ofxCsvRow::getBool(int col) {
 }
 
 //--------------------------------------------------
+void ofxCsvRow::addInt(int what) {
+	data.push_back(ofToString(what));
+}
+
+//--------------------------------------------------
+void ofxCsvRow::addFloat(float what) {
+	data.push_back(ofToString(what));
+}
+
+//--------------------------------------------------
+void ofxCsvRow::addString(string what) {
+	data.push_back(what);
+}
+
+//--------------------------------------------------
+void ofxCsvRow::ofxCsvRow::addBool(bool what) {
+	data.push_back(ofToString(what));
+}
+
+//--------------------------------------------------
 void ofxCsvRow::setInt(int col, int what) {
 	expand(col);
 	data[col] = ofToString(what);
 }
 
+//--------------------------------------------------
 void ofxCsvRow::setFloat(int col, float what) {
 	expand(col);
 	data[col] = ofToString(what);

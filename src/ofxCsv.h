@@ -145,20 +145,37 @@ class ofxCsv {
 		/// Add a row to the end.
 		///
 		/// \param row Row to append.
-		void add(ofxCsvRow &row);
+		void addRow(ofxCsvRow &row);
+	
+		/// Add an empty row to the end.
+		void addRow();
+	
+		/// Set a row at a given position.
+		///
+		/// Replaces existing row. Expands to fit the required number of rows.
+		///
+		/// \param index Desired position.
+		/// \param row Row to insert.
+		void setRow(int index, ofxCsvRow &row);
+	
+		/// Get a row at a given positon.
+		///
+		/// \param index Desired position.
+		/// \returns row or empty row if the index is out of bounds.
+		ofxCsvRow getRow(int index);
 	
 		/// Insert a row at a given position.
 		///
-		/// Expands to fit the required number of rows
+		/// Expands to fit the required number of rows.
 		///
-		/// \param row Row to insert.
 		/// \param index Desired position.
-		void insert(ofxCsvRow &row, int index);
+		/// \param row Row to insert.
+		void insertRow(int index, ofxCsvRow &row);
 	
 		/// Remove a row at a given position.
 		///
 		/// \param index Position of row to remove.
-		void remove(int index);
+		void removeRow(int index);
 	
 		/// Expand for the required number of rows and cols.
 		///
@@ -211,7 +228,28 @@ class ofxCsv {
 		/// \returns the value or false if not found.
 		bool getBool(int row, int col);
 	
-		//// Set a field to an integer value.
+		/// Add an integer field value to the end of a row.
+		///
+		/// \param what Value to set
+		void addInt(int what);
+	
+		/// Add a float field value to the end of a row.
+		///
+		/// \param what Value to set
+		void addFloat(float what);
+	
+		/// Add a string field value to the end of a row.
+		///
+		/// \param row Row number
+		/// \param what Value to set
+		void addString(string what);
+	
+		/// Add a boolean field value to the end of a row.
+		///
+		/// \param what Value to set
+		void addBool(bool what);
+	
+		/// Set a field to an integer value.
 		///
 		/// Expands number of rows and/or cols to fit required field.
 		///
@@ -220,7 +258,7 @@ class ofxCsv {
 		/// \param what Value to set
 		void setInt(int row, int col, int what);
 	
-		//// Set a field to a float value.
+		/// Set a field to a float value.
 		///
 		/// Expands number of rows and/or cols to fit required field.
 		///
@@ -229,7 +267,7 @@ class ofxCsv {
 		/// \param what Value to set
 		void setFloat(int row, int col, float what);
 	
-		//// Set a field to a string value.
+		/// Set a field to a string value.
 		///
 		/// Expands number of rows and/or cols to fit required field.
 		///
@@ -238,7 +276,7 @@ class ofxCsv {
 		/// \param what Value to set
 		void setString(int row, int col, string what);
 	
-		//// Set a field to a boolean value.
+		/// Set a field to a boolean value.
 		///
 		/// Expands number of rows and/or cols to fit required field.
 		///
