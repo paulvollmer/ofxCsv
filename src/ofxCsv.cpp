@@ -31,13 +31,9 @@
 
 #include "ofxCsv.h"
 
-#include <regex>
-
-/// whitespace leading & trailing trim regular expression, from:
-// http://stackoverflow.com/questions/24048400/function-to-trim-leading-and-trailing-whitespace-in-vba
-static std::regex s_trimRegex = std::regex("^[\\s]+|[\\s]+$");
-
-namespace wng {
+#include "ofLog.h"
+#include "ofUtils.h"
+#include "ofFileUtils.h"
 
 //--------------------------------------------------
 ofxCsv::ofxCsv() {
@@ -98,7 +94,7 @@ bool ofxCsv::load(string path, string separator, string comment) {
 	buffer.clear();
 	
 	// expand to fill in any missing cols, just in case
-	expandData(data.size(), maxCols);
+	expand(data.size(), maxCols);
 
 	ofLogVerbose("ofxCsv") << "Read " << lineCount << " lines";
 	ofLogVerbose("ofxCsv") << "Loaded a " << data.size() << "x" << maxCols << " table";
@@ -182,8 +178,47 @@ bool ofxCsv::createFile(string path) {
 /// DATA IO
 
 //--------------------------------------------------
-void ofxCsv::load(vector<vector<string>> &rows) {
+void ofxCsv::load(vector<ofxCsvRow> &rows) {
+	clear();
 	data = rows;
+}
+
+//--------------------------------------------------
+void ofxCsv::load(vector<vector<string>> &rows) {
+	clear();
+	for(auto row : rows) {
+		data.push_back(ofxCsvRow(row));
+	}
+}
+
+//--------------------------------------------------
+void ofxCsv::add(ofxCsvRow &row) {
+	data.push_back(row);
+}
+
+//--------------------------------------------------
+void ofxCsv::insert(ofxCsvRow &row, int index) {
+	int cols = getNumCols();
+	if(index > data.size()) {
+		expand(index-1, cols);
+	}
+	data.insert(data.begin()+index, row);
+	data[index].expand(cols);
+}
+
+//--------------------------------------------------
+void ofxCsv::remove(int index) {
+	data.erase(data.begin()+index);
+}
+
+//--------------------------------------------------
+void ofxCsv::expand(int rows, int cols) {
+	while(data.size() < rows) {
+		data.push_back(ofxCsvRow());
+	}
+	for(auto row : data) {
+		row.expand(cols-1);
+	}
 }
 
 //--------------------------------------------------
@@ -270,60 +305,81 @@ void ofxCsv::setBool(int row, int col, bool what) {
 //--------------------------------------------------
 void ofxCsv::print() {
 	for(auto row : data) {
-		ofLogNotice("ofxCsv") << ofJoinString(row, fieldSeparator);
+		ofLogNotice("ofxCsv") << row;
 	}
 }
 
 // RAW DATA ACCESS
 
 //--------------------------------------------------
-vector<vector<string>>::iterator ofxCsv::begin() {
+vector<ofxCsvRow>::iterator ofxCsv::begin() {
 	return data.begin();
 }
 
 //--------------------------------------------------
-vector<vector<string>>::iterator ofxCsv::end() {
+vector<ofxCsvRow>::iterator ofxCsv::end() {
 	return data.end();
 }
 
 //--------------------------------------------------
-vector<vector<string>>::const_iterator ofxCsv::begin() const{
+vector<ofxCsvRow>::const_iterator ofxCsv::begin() const{
 	return data.begin();
 }
 
 //--------------------------------------------------
-vector<vector<string>>::const_iterator ofxCsv::end() const{
+vector<ofxCsvRow>::const_iterator ofxCsv::end() const{
 	return data.end();
 }
 
 //--------------------------------------------------
-vector<vector<string>>::reverse_iterator ofxCsv::rbegin() {
+vector<ofxCsvRow>::reverse_iterator ofxCsv::rbegin() {
 	return data.rbegin();
 }
 
 //--------------------------------------------------
-vector<vector<string>>::reverse_iterator ofxCsv::rend() {
+vector<ofxCsvRow>::reverse_iterator ofxCsv::rend() {
 	return data.rend();
 }
 
 //--------------------------------------------------
-vector<vector<string>>::const_reverse_iterator ofxCsv::rbegin() const{
+vector<ofxCsvRow>::const_reverse_iterator ofxCsv::rbegin() const{
 	return data.rbegin();
 }
 
 //--------------------------------------------------
-vector<vector<string>>::const_reverse_iterator ofxCsv::rend() const{
+vector<ofxCsvRow>::const_reverse_iterator ofxCsv::rend() const{
 	return data.rend();
 }
 
 //--------------------------------------------------
-vector<string>& ofxCsv::operator[](size_t index) {
+ofxCsv::operator vector<ofxCsvRow>() const {
+	return data;
+}
+
+//--------------------------------------------------
+ofxCsvRow ofxCsv::operator[](size_t index) {
 	return data[index];
 }
 
 //--------------------------------------------------
-vector<string>& ofxCsv::at(size_t index) {
+ofxCsvRow ofxCsv::at(size_t index) {
 	return data.at(index);
+}
+
+//--------------------------------------------------
+ofxCsvRow ofxCsv::front() {
+	if(data.empty()) {
+		return ofxCsvRow();
+	}
+	return data.front();
+}
+
+//--------------------------------------------------
+ofxCsvRow ofxCsv::back() {
+	if(data.empty()) {
+		return ofxCsvRow();
+	}
+	return data.back();
 }
 
 //--------------------------------------------------
@@ -335,134 +391,37 @@ size_t ofxCsv::size() {
 
 //--------------------------------------------------
 void ofxCsv::trim() {
-	for(int row = 0; row < data.size(); ++row) {
-		for(int col = 0; col < data[col].size(); ++col) {
-			data[row][col] = std::regex_replace(data[row][col], s_trimRegex, "$1");
-		}
+	for(auto row : data) {
+		row.trim();
 	}
 }
 
 //--------------------------------------------------
 
-enum ParseState {
-	UnquotedField, // a regular field: hello
-    QuotedField,   // a quoted field: "hello"
-    QuotedQuote,   // quote inside a quoted field: ""hello""
-	Separator      // a char in the separator string
-};
-
-// parse a CSV row string char by char using a state machine
-// handles separators inside quotes & Excel's double quoted quotes, adapted from:
-// http://stackoverflow.com/questions/1120140/how-can-i-read-and-parse-csv-files-in-c/1595366#1595366
 vector<string> ofxCsv::fromRowString(string row, string separator) {
-	
-	ParseState state = UnquotedField;
-    vector<string> fields {""};
-	
-	size_t i = 0; // index of the current field
-	int s = 0; // index in the separator
-	
-	// separator char tracking
-	char sepStart = ','; // default
-	if(!separator.empty()) {
-		sepStart = separator[0];
-	}
-	
-	// parse char by char, perhaps less efficient but catches more end cases
-	// than a simple ofSplitString()
-    for(char c : row) {
-        switch(state) {
-			case Separator:
-				s++; // go to next separator character
-				if(s > separator.size()-1) { // end of separator
-					s = 0;
-					state = UnquotedField;
-				}
-				else if(c != separator[s]) { // woops, wasn't a separator after all
-					s = 0;
-					state = UnquotedField;
-				}
-				else {
-					// eat this char
-					break;
-				}
-            case UnquotedField:
-                switch(c) {
-                    case '"':
-						state = QuotedField;
-						break;
-                    default:
-						if(c == sepStart) { // end of field
-							fields.push_back("");
-							i++;
-							state = Separator;
-						}
-						else {
-							fields[i] += c;
-						}
-						break;
-				}
-                break;
-            case QuotedField:
-                switch(c) {
-                    case '"':
-						state = QuotedQuote;
-						break;
-                    default:
-						fields[i] += c;
-						break;
-				}
-                break;
-            case QuotedQuote:
-                switch(c) {
-                    case '"': // "" -> "
-						fields[i] += '"';
-						state = QuotedField;
-						break;
-                    default:
-						if(c == sepStart) { // end of field, after closing quote
-							fields.push_back("");
-							i++;
-							state = Separator;
-						}
-						else { // end of quote
-							state = UnquotedField;
-						}
-						break;
-				}
-                break;
-        }
-    }
-    return fields;
+	return ofxCsvRow::fromString(row, separator);
+
 }
 
 //--------------------------------------------------
 vector<string> ofxCsv::fromRowString(string row) {
-	return fromRowString(row, fieldSeparator);
+	return ofxCsvRow::fromString(row, fieldSeparator);
 }
 
 //--------------------------------------------------
 string ofxCsv::toRowString(vector<string> row, string separator, bool quote) {
-	if(quote) { // quote field
-		vector<string> fields;
-		for(auto field : row) {
-			fields.push_back("\""+field+"\"");
-		}
-		return ofJoinString(fields, separator);
-	}
-	else { // no quotes
-		return ofJoinString(row, separator);
-	}
+
+	return ofxCsvRow::toString(row, separator, quote);
 }
 
 //--------------------------------------------------
 string ofxCsv::toRowString(vector<string> row, string separator) {
-	return toRowString(row, separator, false);
+	return ofxCsvRow::toString(row, separator, false);
 }
 
 //--------------------------------------------------
 string ofxCsv::toRowString(vector<string> row) {
-	return toRowString(row, fieldSeparator, false);
+	return ofxCsvRow::toString(row, fieldSeparator, false);
 }
 
 //--------------------------------------------------
@@ -480,28 +439,12 @@ string ofxCsv::getCommentPrefix() {
 	return commentPrefix;
 }
 
-// PRIVATE
-
-//--------------------------------------------------
-void ofxCsv::expandData(int rows, int cols) {
-	while(data.size() < rows) {
-		data.push_back(vector<string>());
-	}
-	for(auto row : data) {
-		while(row.size() < cols) {
-			row.push_back("");
-		}
-	}
-}
+// PROTECTED
 
 //--------------------------------------------------
 void ofxCsv::expandRow(int row, int cols) {
 	while(data.size() <= row) {
-		data.push_back(vector<string>());
+		data.push_back(ofxCsvRow());
 	}
-	while(data[row].size() <= cols) {
-		data[row].push_back("");
-	}
+	data[row].expand(cols);
 }
-
-} // namespace

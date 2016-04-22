@@ -41,9 +41,12 @@ void ofApp::setup(){
 	//csv.trim(); // Trim leading/trailing whitespace from non-quoted fields.
 	
 	ofLog() << "Print out a specific CSV value";
-	ofLog() << "|" << csv[0][1] << "|";
+	ofLog() << csv[0][1];
 	// also you can write...
 	ofLog() << csv[0].at(1);
+	// or you can get the row itself...
+	ofxCsvRow row = csv[0];
+	ofLog() << row.getString(1);
 	
 	csv.print();
 	
@@ -66,9 +69,8 @@ void ofApp::draw(){
 	// Check how many rows exist.
 	ofDrawBitmapString("csv rows: " + ofToString(csv.getNumRows()), 200, 70);
 	
-	// Check how many column exist.
-	// For that we reat the first line from CSV.
-	ofDrawBitmapString("csv cols: " + ofToString(csv.getNumCols(0)), 200, 90);
+	// Check how many columns exist.
+	ofDrawBitmapString("csv cols: " + ofToString(csv.getNumCols()), 200, 90);
 	
 	// Print out all rows and cols.
 	for(int i = 0; i < csv.getNumRows(); i++) {
@@ -79,11 +81,11 @@ void ofApp::draw(){
 	
 	// Read a CSV row as simple String. Note the quoted separator in one of the fields.
 	ofDrawBitmapString("CSV VECTOR STRING", 200, 350);
-	vector<string> dataExample = csv.fromRowString("0x11120119][100][40][445][23][543][\"][46\"][24][56][14][964][12", "][");
+	ofxCsvRow row("0x11120119][100][40][445][23][543][\"][46\"][24][56][14][964][12", "][");
 	
 	// Print the whole CSV data string to console.
-	for(int i = 0; i < dataExample.size(); i++) {
-		ofDrawBitmapString("[" + ofToString(i) + "]: " + ofToString(dataExample[i]), 200, 370+i*20 );
+	for(int i = 0; i < row.getNumCols(); i++) {
+		ofDrawBitmapString("[" + ofToString(i) + "]: " + row[i], 200, 370+i*20 );
 	}
 	
 	// Show the current mouse recording state
@@ -106,7 +108,7 @@ void ofApp::keyPressed(int key){
 	
 	if(key == 's') {
 	
-		// Get a specific value as integer, float, string etc.
+		// Set a specific value as integer, float, string etc.
 		csv.setInt(0, 0, 2305);
 		ofLog() << "getInt: " << csv.getInt(0, 0);
 		csv.setFloat(0, 1, 23.666);
@@ -120,11 +122,11 @@ void ofApp::keyPressed(int key){
 		csv.save(ofToDataPath("savefile.csv"));
 	}
 	else if(key == 'x') {
-		// clear all data from csvRecorder
+		// Clear all data from csvRecorder.
 		csvRecorder.clear();
 	}
 	else if(key == 'r') {
-		// Save the recorded values in the csvRecorder ofxCsv object
+		// Save the recorded values in the csvRecorder ofxCsv object.
 		csvRecorder.save("MyRecordedMouseData.csv");
 		ofLog() << "Saved " << csvRecorder.getNumRows() << " rows of mouse data";
 	}
@@ -133,7 +135,7 @@ void ofApp::keyPressed(int key){
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
 	
-	// Create a new File.
+	// Create a new file. Empty until saved to.
 	csv.createFile(ofToDataPath("createfile.csv"));
 }
 
@@ -146,22 +148,23 @@ void ofApp::mouseMoved(int x, int y ){
 void ofApp::mouseDragged(int x, int y, int button){	
 	
 	// Add the current cursor position to the mouseData
-	int row = csvRecorder.getNumRows();
-	csvRecorder.setInt(row, 0, x);
-	csvRecorder.setInt(row, 1, y);
+	ofxCsvRow row;
+	row.setInt(0, x);
+	row.setInt(0, y);
+	csvRecorder.add(row);
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
 	
-	// change the recording state for the mouse
+	// Change the recording state for the mouse.
 	recordingMouse = true;
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
 	
-	// change the recording state for the mouse
+	// Change the recording state for the mouse.
 	recordingMouse = false;
 }
 

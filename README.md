@@ -42,7 +42,7 @@ See `src/ofxCsv.h` for detailed information.
 Installation & Usage
 --------------------
 
-To install ofxCsv, move the ofxCsv folder to your `openFrameworks/addons/` folder.
+To install ofxCsv, move the ofxCsv folder to your `openFrameworks/addons` folder.
 
 Basic usage is demonstrated by csvExample.
 
@@ -63,7 +63,7 @@ Changelog
 A detailed changelog, intended for programmers.  
 
 0.2.0
-partial rewrite & update to OF 0.9+
+partial rewrite & update to OF 0.9+, added ofxCsvRow
 
 0.1.3  
 small bugfix  (thanks to Pinkerton)  

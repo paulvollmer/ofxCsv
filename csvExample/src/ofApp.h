@@ -33,8 +33,6 @@
 #include "ofMain.h"
 #include "ofxCsv.h"
 
-using namespace wng;
-
 class ofApp : public ofBaseApp{
 
 	public:

@@ -30,10 +30,13 @@
 
 #pragma once
 
-#include <ofMain.h>
+#include "ofxCsvRow.h"
 
-namespace wng {
-	
+/// \class ofxCsv
+/// \brief table data loaded from & saved to CSV (Comma-Separated Value) files
+///
+/// See https://en.wikipedia.org/wiki/Comma-separated_values for format info.
+///
 class ofxCsv {
 	
 	public:
@@ -109,12 +112,45 @@ class ofxCsv {
 	
 	/// \section Data IO
 	
+		/// Load from a vector of rows.
+		///
+		/// Clears any currently loaded data.
+		///
+		/// \param rows Rows to load.
+		void load(vector<ofxCsvRow> &rows);
+	
 		/// Load from a vector of row strings.
 		///
 		/// Clears any currently loaded data.
 		///
-		/// \param data Rows to load.
+		/// \param rows Rows to load.
 		void load(vector<vector<string>> &rows);
+	
+		/// Add a row to the end.
+		///
+		/// \param row Row to append.
+		void add(ofxCsvRow &row);
+	
+		/// Insert a row at a given position.
+		///
+		/// Expands to fit the required number of rows
+		///
+		/// \param row Row to insert.
+		/// \param index Desired position.
+		void insert(ofxCsvRow &row, int index);
+	
+		/// Remove a row at a given position.
+		///
+		/// \param index Position of row to remove.
+		void remove(int index);
+	
+		/// Expand for the required number of rows and cols.
+		///
+		/// Fills any missing fields with empty strings.
+		///
+		/// \param rows Number of desired rows.
+		/// \param cols Number of desired columns.
+		void expand(int rows, int cols);
 	
 		/// Clear the current row and column data.
 		void clear();
@@ -127,36 +163,34 @@ class ofxCsv {
 	
 		/// Get the current number of cols for a given row.
 		///
-		/// Note: This *may* not be the same for every row.
-		///
 		/// \param row Row to get the number of cols for, default: 0.
 		/// \returns the number of cols in the given row or 0 if the row does not exist.
 		unsigned int getNumCols(int row=0);
 	
 		/// Get a field as an integer value.
 		///
-		/// \param row Row number.
+		/// \param row Row number
 		/// \param col Column number
 		/// \returns the value or 0 if not found.
 		int getInt(int row, int col);
 	
 		/// Get a field as a float value.
 		///
-		/// \param row Row number.
+		/// \param row Row number
 		/// \param col Column number
 		/// \returns the value or 0.0 if not found.
 		float getFloat(int row, int col);
 	
 		/// Get a field as a string value.
 		///
-		/// \param row Row number.
+		/// \param row Row number
 		/// \param col Column number
 		/// \returns the value or "" if not found.
 		string getString(int row, int col);
 	
 		/// Get a field as a boolean value.
 		///
-		/// \param row Row number.
+		/// \param row Row number
 		/// \param col Column number
 		/// \returns the value or false if not found.
 		bool getBool(int row, int col);
@@ -165,7 +199,7 @@ class ofxCsv {
 		///
 		/// Expands number of rows and/or cols to fit required field.
 		///
-		/// \param row Row number.
+		/// \param row Row number
 		/// \param col Column number
 		/// \param what Value to set
 		void setInt(int row, int col, int what);
@@ -174,7 +208,7 @@ class ofxCsv {
 		///
 		/// Expands number of rows and/or cols to fit required field.
 		///
-		/// \param row Row number.
+		/// \param row Row number
 		/// \param col Column number
 		/// \param what Value to set
 		void setFloat(int row, int col, float what);
@@ -183,7 +217,7 @@ class ofxCsv {
 		///
 		/// Expands number of rows and/or cols to fit required field.
 		///
-		/// \param row Row number.
+		/// \param row Row number
 		/// \param col Column number
 		/// \param what Value to set
 		void setString(int row, int col, string what);
@@ -192,7 +226,7 @@ class ofxCsv {
 		///
 		/// Expands number of rows and/or cols to fit required field.
 		///
-		/// \param row Row number.
+		/// \param row Row number
 		/// \param col Column number
 		/// \param what Value to set
 		void setBool(int row, int col, bool what);
@@ -210,20 +244,29 @@ class ofxCsv {
 		//       // do something for each row
 		//     }
 		//
-		vector<vector<string>>::iterator begin();
-		vector<vector<string>>::iterator end();
-		vector<vector<string>>::const_iterator begin() const;
-		vector<vector<string>>::const_iterator end() const;
-		vector<vector<string>>::reverse_iterator rbegin();
-		vector<vector<string>>::reverse_iterator rend();
-		vector<vector<string>>::const_reverse_iterator rbegin() const;
-		vector<vector<string>>::const_reverse_iterator rend() const;
+		vector<ofxCsvRow>::iterator begin();
+		vector<ofxCsvRow>::iterator end();
+		vector<ofxCsvRow>::const_iterator begin() const;
+		vector<ofxCsvRow>::const_iterator end() const;
+		vector<ofxCsvRow>::reverse_iterator rbegin();
+		vector<ofxCsvRow>::reverse_iterator rend();
+		vector<ofxCsvRow>::const_reverse_iterator rbegin() const;
+		vector<ofxCsvRow>::const_reverse_iterator rend() const;
+	
+		/// Use as a vector of rows.
+		operator vector<ofxCsvRow>() const;
 	
 		/// Raw string data access via row array indices.
-		vector<string>& operator[](size_t index);
+		ofxCsvRow operator[](size_t index);
 	
 		/// Raw string data access via index.
-		vector<string>& at(size_t index);
+		ofxCsvRow at(size_t index);
+	
+		/// Get the first row, like vector.
+		ofxCsvRow front();
+	
+		/// Get the last row, like vector.
+		ofxCsvRow back();
 	
 		/// Alternate row size getter.
 		size_t size();
@@ -284,22 +327,18 @@ class ofxCsv {
 	
 	protected:
 	
-		/// row & col string data
-		vector<vector<string>> data;
+		/// Expand to include a required row.
+		///
+		/// Fills any missing fields in this row with empty strings.
+		///
+		/// \param rows Row to expand to
+		/// \param cols Number of desired columns in the row.
+		void expandRow(int row, int cols);
+	
+		/// row data
+		vector<ofxCsvRow> data;
 	
 		string filePath;       //< Current file path
 		string fieldSeparator; //< Field separator, default: comma ","
 		string commentPrefix;  //< Comment line prefix, default: "#"
-	
-	private:
-	
-		/// Expand the current data for the required number of rows and cols.
-		/// Fills any missing fields with empty strings.
-		void expandData(int rows, int cols);
-	
-		/// Expand the data to include a required row.
-		/// Fills any missing fields in the row with emty strings.
-		void expandRow(int row, int cols);
 };
-
-}; // namespace
