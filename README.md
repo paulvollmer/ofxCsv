@@ -59,9 +59,16 @@ setInt(int col, int what)
 setFloat(int col, float what)
 setString(int col, string what)
 setBool(int col, bool what)
+
+insertInt(int col, int what)
+insertFloat(int col, float what)
+insertString(int col, string what)
+insertBool(int col, bool what)
+
+remove(int col)
 ~~~
 
-See `src/ofxCsv.h` & `src/ofxCsv.cpp` for detailed information & additional functionality.
+See `src/ofxCsv.h` & `src/ofxCsv.h` for detailed information & additional functionality.
 
 Installation & Usage
 --------------------
