@@ -64,6 +64,19 @@ void ofApp::setup(){
 	for(auto row : csv) {
 		ofLog() << ofJoinString(row, "|");
 	}
+	
+	// Test row field functions.
+	ofLog() << "Row field test";
+	ofxCsvRow row;
+	row.addString("hello");
+	row.addString("world");
+	ofLog() << "  " << row;
+	row.setString(1, "bar");
+	ofLog() << "  " << row;
+	row.insertString(1, "foo");
+	ofLog() << "  " << row;
+	row.remove(0);
+	ofLog() << "  " << row;
 }
 
 //--------------------------------------------------------------

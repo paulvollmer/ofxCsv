@@ -94,6 +94,12 @@ void ofxCsvRow::clear() {
 	data.clear();
 }
 
+//--------------------------------------------------
+ostream& operator<<(ostream &ostr, const ofxCsvRow &row) {
+	ostr << ofxCsvRow::toString(row, ",", false);
+	return ostr;
+}
+
 /// GETTING FIELDS
 
 //--------------------------------------------------
@@ -135,12 +141,6 @@ bool ofxCsvRow::getBool(int col) {
 	return ofToBool(data[col]);
 }
 
-//--------------------------------------------------
-ostream& operator<<(ostream &ostr, const ofxCsvRow &row) {
-	ostr << ofxCsvRow::toString(row, ",", false);
-	return ostr;
-}
-
 // ADDING FIELDS
 
 //--------------------------------------------------
@@ -179,13 +179,48 @@ void ofxCsvRow::setFloat(int col, float what) {
 //--------------------------------------------------
 void ofxCsvRow::setString(int col, string what) {
 	expand(col);
-	data[col] = ofToString(what);
+	data[col] = what;
 }
 
 //--------------------------------------------------
 void ofxCsvRow::setBool(int col, bool what) {
 	expand(col);
 	data[col] = ofToString(what);
+}
+
+// INSERTING FIELDS
+
+//--------------------------------------------------
+void ofxCsvRow::insertInt(int col, int what) {
+	expand(col);
+	data.insert(data.begin()+col, ofToString(what));
+}
+
+//--------------------------------------------------
+void ofxCsvRow::insertFloat(int col, float what) {
+	expand(col);
+	data.insert(data.begin()+col, ofToString(what));
+}
+
+//--------------------------------------------------
+void ofxCsvRow::insertString(int col, string what) {
+	expand(col);
+	data.insert(data.begin()+col, what);
+}
+
+//--------------------------------------------------
+void ofxCsvRow::insertBool(int col, bool what) {
+	expand(col);
+	data.insert(data.begin()+col, ofToString(what));
+}
+
+// REMOVING FIELDS
+
+//--------------------------------------------------
+void ofxCsvRow::remove(int col) {
+	if(col < data.size()) {
+		data.erase(data.begin()+col);
+	}
 }
 
 // RAW ACCESS

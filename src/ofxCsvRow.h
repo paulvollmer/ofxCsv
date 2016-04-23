@@ -80,12 +80,14 @@ class ofxCsvRow {
 		/// Clear the current row data.
 		void clear();
 	
+		/// Streams row as a string using the default separator comma ","
+		friend ostream& operator<<(ostream &ostr, const ofxCsvRow &row);
+	
 	/// \section Get Fields
 	
 		/// Get the current number of cols.
 		///
-		/// \param row Row to get the number of cols for, default 0.
-		/// \returns the number of cols in the given row or 0 if the row does not exist.
+		/// \returns the number of cols.
 		unsigned int getNumCols();
 	
 		/// Get a field as an integer value.
@@ -112,15 +114,12 @@ class ofxCsvRow {
 		/// \returns the value or false if not found.
 		bool getBool(int col);
 	
+	/// \section Adding Fields
+	
 		/// Add an integer field value to the end of the row.
 		///
 		/// \param what Value to set
 		void addInt(int what);
-	
-		/// Streams row as a string using the default separator comma ","
-		friend ostream& operator<<(ostream &ostr, const ofxCsvRow &row);
-	
-	/// \section Adding Fields
 	
 		/// Add a float field value to the end of the row.
 		///
@@ -141,7 +140,8 @@ class ofxCsvRow {
 	
 		/// Set a field to an integer value.
 		///
-		/// Expands number of cols to fit required field.
+		/// Overwrites existing value. Expands number of cols
+		/// to fit required field.
 		///
 		/// \param col Column number
 		/// \param what Value to set
@@ -149,7 +149,8 @@ class ofxCsvRow {
 	
 		/// Set a field to a float value.
 		///
-		/// Expands number of cols to fit required field.
+		/// Overwrites existing value. Expands number of cols
+		/// to fit required field.
 		///
 		/// \param col Column number
 		/// \param what Value to set
@@ -157,7 +158,8 @@ class ofxCsvRow {
 	
 		/// Set a field to a string value.
 		///
-		/// Expands number of cols to fit required field.
+		/// Overwrites existing value. Expands number of cols
+		/// to fit required field.
 		///
 		/// \param col Column number
 		/// \param what Value to set
@@ -165,11 +167,53 @@ class ofxCsvRow {
 	
 		/// Set a field to a boolean value.
 		///
-		/// Expands number of cols to fit required field.
+		/// Overwrites existing value. Expands number of cols
+		/// to fit required field.
 		///
 		/// \param col Column number
 		/// \param what Value to set
 		void setBool(int col, bool what);
+	
+	/// \section Inserting Fields
+	
+		/// Insert a integer value field at a given position.
+		///
+		/// Expands number of cols to fit required field.
+		///
+		/// \param col Column number
+		/// \param what Value to set
+		void insertInt(int col, int what);
+	
+		/// Insert a float value field at a given position.
+		///
+		/// Expands number of cols to fit required field.
+		///
+		/// \param col Column number
+		/// \param what Value to set
+		void insertFloat(int col, float what);
+	
+		/// Insert a string value field at a given position.
+		///
+		/// Expands number of cols to fit required field.
+		///
+		/// \param col Column number
+		/// \param what Value to set
+		void insertString(int col, string what);
+	
+		/// Insert a boolean value field at a given position.
+		///
+		/// Expands number of cols to fit required field.
+		///
+		/// \param col Column number
+		/// \param what Value to set
+		void insertBool(int col, bool what);
+	
+	/// \section Removing Fields
+	
+		/// Remove a field at a given position.
+		///
+		/// \param col Column position of field to remove.
+		void remove(int col);
 	
 	/// \section Raw Access
 	
