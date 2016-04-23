@@ -42,7 +42,7 @@ class ofxCsvRow {
 		ofxCsvRow();
 	
 		/// Create & load from a string with optional field separator.
-		ofxCsvRow(const string &cols, string separator=",");
+		ofxCsvRow(const string &cols, const string &separator=",");
 	
 		/// Create & load from a vector.
 		ofxCsvRow(const vector<string> &cols);
@@ -61,7 +61,7 @@ class ofxCsvRow {
 		///
 		/// \param cols Column string to load.
 		/// \param separator Optional field separator, default comma ",".
-		void load(const string &cols, string separator=",");
+		void load(const string &cols, const string &separator=",");
 	
 		/// Load from a vector of col strings.
 		///
@@ -79,6 +79,13 @@ class ofxCsvRow {
 	
 		/// Clear the current row data.
 		void clear();
+	
+		/// Convert the row fields into a string.
+		///
+		/// \param quote Should the fields be double quoted? default false.
+		/// \param separator Field separator string, default comma ",".
+		/// \returns The row as a single string.
+		string toString(bool quote=false, const string &separator=",");
 	
 		/// Streams row as a string using the default separator comma ","
 		friend ostream& operator<<(ostream &ostr, const ofxCsvRow &row);

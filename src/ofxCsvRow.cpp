@@ -43,7 +43,7 @@ static std::regex s_trimRegex = std::regex("^[\\s]+|[\\s]+$");
 ofxCsvRow::ofxCsvRow() {}
 
 //--------------------------------------------------
-ofxCsvRow::ofxCsvRow(const string &cols, string separator) {
+ofxCsvRow::ofxCsvRow(const string &cols, const string &separator) {
 	load(cols, separator);
 }
 
@@ -66,7 +66,7 @@ ofxCsvRow& ofxCsvRow::operator=(const ofxCsvRow &mom) {
 // DATA IO
 
 //--------------------------------------------------
-void ofxCsvRow::load(const string &cols, string separator) {
+void ofxCsvRow::load(const string &cols, const string &separator) {
 	clear();
 	data = ofxCsvRow::fromString(cols, separator);
 }
@@ -91,6 +91,11 @@ void ofxCsvRow::expand(int cols) {
 //--------------------------------------------------
 void ofxCsvRow::clear() {
 	data.clear();
+}
+
+//--------------------------------------------------
+string ofxCsvRow::toString(bool quote, const string &separator) {
+	return ofxCsvRow::toString(data, quote, separator);
 }
 
 //--------------------------------------------------

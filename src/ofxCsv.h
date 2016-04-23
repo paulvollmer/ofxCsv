@@ -94,7 +94,7 @@ class ofxCsv {
 		/// Creates any required folders in the path, if needed.
 		///
 		/// \param filePath File path to save.
-		/// \param quote Should the fields be double quoted? default false.
+		/// \param quote Should the fields be double quoted?
 		/// \param separator Field separator string, default comma ",".
 		/// \returns true if file saved successfully
 		bool save(const string &path, bool quote, const string &separator);
@@ -104,19 +104,10 @@ class ofxCsv {
 		/// Uses the current field separator. Creates any required folders in
 		/// the path, if needed.
 		///
-		/// \param filePath File path to save.
+		/// \param filePath File path to save. Leave empty to save current file.
 		/// \param quote Should the fields be double quoted? default false.
 		/// \returns true if file saved successfully
-		bool save(const string &path, bool quote);
-	
-		/// Save a CSV file.
-		///
-		/// Uses the current field separator & saves the fields without quotes.
-		/// Creates any required folders in the path, if needed.
-		///
-		/// \param path File path to save. Leave empty to save current file.
-		/// \returns true if file saved successfully
-		bool save(const string &path="");
+		bool save(const string &path="", bool quote=false);
 	
 		/// Create an empty CSV file.
 		///

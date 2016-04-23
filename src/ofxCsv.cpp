@@ -181,11 +181,6 @@ bool ofxCsv::save(const string &path, bool quote) {
 }
 
 //--------------------------------------------------
-bool ofxCsv::save(const string &path) {
-	return save(path, false, fieldSeparator);
-}
-
-//--------------------------------------------------
 bool ofxCsv::createFile(const string &path) {
 	ofLogVerbose("ofxCsv") << "Creating "  << path;
 	ofFile file(ofToDataPath(path), ofFile::WriteOnly, false);
