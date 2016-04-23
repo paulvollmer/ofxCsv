@@ -44,12 +44,12 @@ static std::regex s_trimRegex = std::regex("^[\\s]+|[\\s]+$");
 ofxCsvRow::ofxCsvRow() {}
 
 //--------------------------------------------------
-ofxCsvRow::ofxCsvRow(string cols, string separator) {
+ofxCsvRow::ofxCsvRow(const string &cols, string separator) {
 	load(cols, separator);
 }
 
 //--------------------------------------------------
-ofxCsvRow::ofxCsvRow(vector<string> &cols) {
+ofxCsvRow::ofxCsvRow(const vector<string> &cols) {
 	load(cols);
 }
 
@@ -67,13 +67,13 @@ ofxCsvRow& ofxCsvRow::operator=(const ofxCsvRow &mom) {
 // DATA IO
 
 //--------------------------------------------------
-void ofxCsvRow::load(string cols, string separator) {
+void ofxCsvRow::load(const string &cols, string separator) {
 	clear();
 	data = ofxCsvRow::fromString(cols, separator);
 }
 	
 //--------------------------------------------------
-void ofxCsvRow::load(vector<string> &cols) {
+void ofxCsvRow::load(const vector<string> &cols) {
 	clear();
 	data = cols;
 }
@@ -103,13 +103,12 @@ ostream& operator<<(ostream &ostr, const ofxCsvRow &row) {
 /// GETTING FIELDS
 
 //--------------------------------------------------
-unsigned int ofxCsvRow::getNumCols() {
+unsigned int ofxCsvRow::getNumCols() const {
 	return data.size();
 }
 
 //--------------------------------------------------
-int ofxCsvRow::getInt(int col) {
-	expand(col);
+int ofxCsvRow::getInt(int col) const {
 	if(col >= data.size()) {
 		return 0;
 	}
@@ -117,8 +116,7 @@ int ofxCsvRow::getInt(int col) {
 }
 
 //--------------------------------------------------
-float ofxCsvRow::getFloat(int col) {
-	expand(col);
+float ofxCsvRow::getFloat(int col) const {
 	if(col >= data.size()) {
 		return 0.0f;
 	}
@@ -126,7 +124,7 @@ float ofxCsvRow::getFloat(int col) {
 }
 
 //--------------------------------------------------
-string ofxCsvRow::getString(int col) {
+string ofxCsvRow::getString(int col) const {
 	if(col >= data.size()) {
 		return "";
 	}
@@ -134,7 +132,7 @@ string ofxCsvRow::getString(int col) {
 }
 
 //--------------------------------------------------
-bool ofxCsvRow::getBool(int col) {
+bool ofxCsvRow::getBool(int col) const {
 	if(col >= data.size()) {
 		return false;
 	}
@@ -241,12 +239,12 @@ vector<string>::iterator ofxCsvRow::end() {
 }
 
 //--------------------------------------------------
-vector<string>::const_iterator ofxCsvRow::begin() const{
+vector<string>::const_iterator ofxCsvRow::begin() const {
 	return data.begin();
 }
 
 //--------------------------------------------------
-vector<string>::const_iterator ofxCsvRow::end() const{
+vector<string>::const_iterator ofxCsvRow::end() const {
 	return data.end();
 }
 
@@ -261,12 +259,12 @@ vector<string>::reverse_iterator ofxCsvRow::rend() {
 }
 
 //--------------------------------------------------
-vector<string>::const_reverse_iterator ofxCsvRow::rbegin() const{
+vector<string>::const_reverse_iterator ofxCsvRow::rbegin() const {
 	return data.rbegin();
 }
 
 //--------------------------------------------------
-vector<string>::const_reverse_iterator ofxCsvRow::rend() const{
+vector<string>::const_reverse_iterator ofxCsvRow::rend() const {
 	return data.rend();
 }
 
@@ -276,38 +274,32 @@ ofxCsvRow::operator vector<string>() const {
 }
 
 //--------------------------------------------------
-string ofxCsvRow::operator[](size_t index) {
+string& ofxCsvRow::operator[](size_t index) {
 	return data[index];
 }
 
 //--------------------------------------------------
-string ofxCsvRow::at(size_t index) {
+string& ofxCsvRow::at(size_t index) {
 	return data.at(index);
 }
 
 //--------------------------------------------------
-string ofxCsvRow::front() {
-	if(data.empty()) {
-		return "";
-	}
+string& ofxCsvRow::front(){
 	return data.front();
 }
 
 //--------------------------------------------------
-string ofxCsvRow::back() {
-	if(data.empty()) {
-		return "";
-	}
+string& ofxCsvRow::back(){
 	return data.back();
 }
 
 //--------------------------------------------------
-size_t ofxCsvRow::size() {
+size_t ofxCsvRow::size() const {
 	return data.size();
 }
 
 //--------------------------------------------------
-bool ofxCsvRow::empty() {
+bool ofxCsvRow::empty() const {
 	return data.empty();
 }
 
@@ -321,12 +313,11 @@ void ofxCsvRow::trim() {
 }
 
 //--------------------------------------------------
-string trimString(string s) {
+string trimString(const string &s) {
 	return std::regex_replace(s, s_trimRegex, "$1");
 }
 
 //--------------------------------------------------
-
 enum ParseState {
 	UnquotedField, // a regular field: hello
 	QuotedField,   // a quoted field: "hello"
@@ -337,7 +328,7 @@ enum ParseState {
 // parse a CSV row string char by char using a state machine
 // handles separators inside quotes & Excel's double quoted quotes, adapted from:
 // http://stackoverflow.com/questions/1120140/how-can-i-read-and-parse-csv-files-in-c/1595366#1595366
-vector<string> ofxCsvRow::fromString(string row, string separator) {
+vector<string> ofxCsvRow::fromString(const string &row, const string &separator) {
 	
 	ParseState state = UnquotedField;
 	vector<string> fields {""};
@@ -420,7 +411,7 @@ vector<string> ofxCsvRow::fromString(string row, string separator) {
 }
 
 //--------------------------------------------------
-string ofxCsvRow::toString(vector<string> row, string separator, bool quote) {
+string ofxCsvRow::toString(const vector<string> &row, const string &separator, bool quote) {
 	if(quote) { // quote field
 		vector<string> fields;
 		for(auto field : row) {

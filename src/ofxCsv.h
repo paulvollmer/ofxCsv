@@ -65,7 +65,7 @@ class ofxCsv {
 		/// \param separator Field separator string, default comma ",".
 		/// \param comment Comment line prefix string, default "#".
 		/// \returns true if file loaded successfully
-		bool load(string path, string separator, string comment);
+		bool load(const string &path, const string &separator, const string &comment);
 	
 		/// Load a CSV File.
 		///
@@ -77,7 +77,7 @@ class ofxCsv {
 		/// \param path File path to load.
 		/// \param separator Field separator string, default comma ",".
 		/// \returns true if file loaded successfully
-		bool load(string path, string separator);
+		bool load(const string &path, const string &separator);
 	
 		/// Load a CSV File.
 		///
@@ -87,7 +87,7 @@ class ofxCsv {
 		///
 		/// \param path File path to load. Leave empty to load current file.
 		/// \returns true if file loaded successfully
-		bool load(string path="");
+		bool load(const string &path="");
 	
 		/// Save a CSV file.
 		///
@@ -97,7 +97,7 @@ class ofxCsv {
 		/// \param quote Should the fields be double quoted? default false.
 		/// \param separator Field separator string, default comma ",".
 		/// \returns true if file saved successfully
-		bool save(string path, bool quote, string separator);
+		bool save(const string &path, bool quote, const string &separator);
 	
 		/// Save a CSV file.
 		///
@@ -107,7 +107,7 @@ class ofxCsv {
 		/// \param filePath File path to save.
 		/// \param quote Should the fields be double quoted? default false.
 		/// \returns true if file saved successfully
-		bool save(string path, bool quote);
+		bool save(const string &path, bool quote);
 	
 		/// Save a CSV file.
 		///
@@ -116,7 +116,7 @@ class ofxCsv {
 		///
 		/// \param path File path to save. Leave empty to save current file.
 		/// \returns true if file saved successfully
-		bool save(string path="");
+		bool save(const string &path="");
 	
 		/// Create an empty CSV file.
 		///
@@ -124,7 +124,7 @@ class ofxCsv {
 		///
 		/// \param path File path to create. Sets current file path.
 		/// \returns true if file saved successfully
-		bool createFile(string path);
+		bool createFile(const string &path);
 	
 	/// \section Data IO
 	
@@ -133,14 +133,14 @@ class ofxCsv {
 		/// Clears any currently loaded data.
 		///
 		/// \param rows Rows to load.
-		void load(vector<ofxCsvRow> &rows);
+		void load(const vector<ofxCsvRow> &rows);
 	
 		/// Load from a vector of row strings.
 		///
 		/// Clears any currently loaded data.
 		///
 		/// \param rows Rows to load.
-		void load(vector<vector<string>> &rows);
+		void load(const vector<vector<string>> &rows);
 	
 		/// Expand for the required number of rows and cols.
 		///
@@ -157,13 +157,13 @@ class ofxCsv {
 	
 		/// Get the current number of rows.
 		/// \returns the current number of rows
-		unsigned int getNumRows();
+		unsigned int getNumRows() const;
 	
 		/// Get the current number of cols for a given row.
 		///
 		/// \param row Row to get the number of cols for, default 0.
 		/// \returns the number of cols in the given row or 0 if the row does not exist.
-		unsigned int getNumCols(int row=0);
+		unsigned int getNumCols(int row=0) const;
 	
 		/// Get a row at a given positon.
 		///
@@ -203,7 +203,7 @@ class ofxCsv {
 		void removeRow(int index);
 	
 		/// Print the current rows to the console.
-		void print();
+		void print() const;
 	
 	/// \section Raw Access
 	
@@ -231,23 +231,23 @@ class ofxCsv {
 		operator vector<ofxCsvRow>() const;
 	
 		/// Raw string data access via row array indices.
-		ofxCsvRow operator[](size_t index);
+		ofxCsvRow& operator[](size_t index);
 	
 		/// Raw string data access via index.
-		ofxCsvRow at(size_t index);
+		ofxCsvRow& at(size_t index);
 	
 		/// Get the first row, like vector.
-		ofxCsvRow front();
+		ofxCsvRow& front();
 	
 		/// Get the last row, like vector.
-		ofxCsvRow back();
+		ofxCsvRow& back();
 	
 		/// Alternate row size getter.
-		size_t size();
+		size_t size() const;
 	
 		/// Is the table empty?
 		/// \returns true if there is no row data.
-		bool empty();
+		bool empty() const;
 	
 	/// \section Util
 	
@@ -259,7 +259,7 @@ class ofxCsv {
 		/// \param row Row string to split.
 		/// \param separator Field separator string, default comma ",".
 		/// \returns String vector of fields.
-		vector<string> fromRowString(string row, string separator);
+		vector<string> fromRowString(const string &row, const string &separator);
 	
 		/// Split a row string into fields.
 		///
@@ -267,15 +267,15 @@ class ofxCsv {
 		///
 		/// \param row Row string to split.
 		/// \returns String vector of fields.
-		vector<string> fromRowString(string row);
+		vector<string> fromRowString(const string &row);
 	
 		/// Join a row of separate column fields into a single string.
 		///
 		/// \param row Fields to join.
-		/// \param separator Field separator string, default comma ",".
 		/// \param quote Should the fields be double quoted? default false.
+		/// \param separator Field separator string, default comma ",".
 		/// \returns The row as a single string.
-		string toRowString(vector<string> row, string separator, bool quote);
+		string toRowString(const vector<string> &row, bool quote, const string &separator);
 	
 		/// Join a row of separate column fields into a single string.
 		///
@@ -284,7 +284,7 @@ class ofxCsv {
 		/// \param row Fields to join.
 		/// \param separator Field separator string, default comma ",".
 		/// \returns The row as a single string.
-		string toRowString(vector<string> cols, string separator);
+		string toRowString(const vector<string> &cols, const string &separator);
 	
 		/// Join a row of separate column fields into a single string.
 		///
@@ -292,19 +292,19 @@ class ofxCsv {
 		///
 		/// \param row Fields to join.
 		/// \returns The row as a single string.
-		string toRowString(vector<string> cols);
+		string toRowString(const vector<string> &cols);
 	
 		/// Get the current file path.
-		string getPath();
+		string getPath() const;
 	
 		/// Get the field separator, default comma ",".
-		string getFieldSeparator();
+		string getFieldSeparator() const;
 	
 		/// Get the current comment line prefix, default "#".
-		string getCommentPrefix();
+		string getCommentPrefix() const;
 	
 		/// Get whether fields should be quoted when saving, default false.
-		bool getQuoteFields();
+		bool getQuoteFields() const;
 	
 	protected:
 	

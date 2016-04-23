@@ -70,13 +70,13 @@ void ofApp::setup(){
 	ofxCsvRow row;
 	row.addString("hello");
 	row.addString("world");
-	ofLog() << "  " << row;
+	ofLog() << row;
 	row.setString(1, "bar");
-	ofLog() << "  " << row;
+	ofLog() << row;
 	row.insertString(1, "foo");
-	ofLog() << "  " << row;
+	ofLog() << row;
 	row.remove(0);
-	ofLog() << "  " << row;
+	ofLog() << row;
 }
 
 //--------------------------------------------------------------

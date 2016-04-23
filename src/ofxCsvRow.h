@@ -42,10 +42,10 @@ class ofxCsvRow {
 		ofxCsvRow();
 	
 		/// Create & load from a string with optional field separator.
-		ofxCsvRow(string cols, string separator=",");
+		ofxCsvRow(const string &cols, string separator=",");
 	
 		/// Create & load from a vector.
-		ofxCsvRow(vector<string> &cols);
+		ofxCsvRow(const vector<string> &cols);
 	
 		/// Copy constructor
 		ofxCsvRow(const ofxCsvRow &mom);
@@ -61,14 +61,14 @@ class ofxCsvRow {
 		///
 		/// \param cols Column string to load.
 		/// \param separator Optional field separator, default comma ",".
-		void load(string cols, string separator=",");
+		void load(const string &cols, string separator=",");
 	
 		/// Load from a vector of col strings.
 		///
 		/// Clears any currently loaded data.
 		///
 		/// \param data Cols to load.
-		void load(vector<string> &cols);
+		void load(const vector<string> &cols);
 	
 		/// Expand for the required number of cols.
 		///
@@ -88,31 +88,31 @@ class ofxCsvRow {
 		/// Get the current number of cols.
 		///
 		/// \returns the number of cols.
-		unsigned int getNumCols();
+		unsigned int getNumCols() const;
 	
 		/// Get a field as an integer value.
 		///
 		/// \param col Column number
 		/// \returns the value or 0 if not found.
-		int getInt(int col);
+		int getInt(int col) const;
 	
 		/// Get a field as a float value.
 		///
 		/// \param col Column number
 		/// \returns the value or 0.0 if not found.
-		float getFloat(int col);
+		float getFloat(int col) const;
 	
 		/// Get a field as a string value.
 		///
 		/// \param col Column number
 		/// \returns the value or "" if not found.
-		string getString(int col);
+		string getString(int col) const;
 	
 		/// Get a field as a boolean value.
 		///
 		/// \param col Column number
 		/// \returns the value or false if not found.
-		bool getBool(int col);
+		bool getBool(int col) const;
 	
 	/// \section Adding Fields
 	
@@ -240,23 +240,23 @@ class ofxCsvRow {
 		operator vector<string>() const;
 	
 		/// Raw string data access via col array indices.
-		string operator[](size_t index);
+		string& operator[](size_t index);
 	
 		/// Raw string data access via index.
-		string at(size_t index);
+		string& at(size_t index);
 	
 		/// Get the first column, like vector.
-		string front();
+		string& front();
 	
 		/// Get the last column, like vector.
-		string back();
+		string& back();
 	
 		/// Alternate column size getter.
-		size_t size();
+		size_t size() const;
 	
 		/// Is the row empty?
 		/// \returns true if there is no col data.
-		bool empty();
+		bool empty() const;
 	
 	/// \section Util
 	
@@ -265,14 +265,14 @@ class ofxCsvRow {
 	
 		/// Trim leading & trailing whitespace from a string.
 		/// \returns trimmed string
-		static string trimString(string s);
+		static string trimString(const string &s);
 	
 		/// Split a row string into fields.
 		///
 		/// \param row Row string to split.
 		/// \param separator Field separator string, default comma ",".
 		/// \returns String vector of fields.
-		static vector<string> fromString(string row, string separator);
+		static vector<string> fromString(const string &row, const string &separator);
 	
 		/// Join a row of separate column fields into a single string.
 		///
@@ -280,7 +280,7 @@ class ofxCsvRow {
 		/// \param separator Field separator string, default comma ",".
 		/// \param quote Should the fields be double quoted? default false.
 		/// \returns The row as a single string.
-		static string toString(vector<string> row, string separator, bool quote);
+		static string toString(const vector<string> &row, const string &separator, bool quote);
 	
 	protected:
 	
