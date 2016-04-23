@@ -24,8 +24,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  
- *  @modified           2015.04.21
+ *  @modified           2016.04.23
  *  @version            0.2.0
  */
 
@@ -39,7 +38,6 @@
 ofxCsv::ofxCsv() {
 	fieldSeparator = ",";
 	commentPrefix = "#";
-	quoteFields = false;
 }
 
 //--------------------------------------------------
@@ -55,8 +53,8 @@ bool ofxCsv::load(const string &path, const string &separator, const string &com
 	
 	// verbose log print
 	ofLogVerbose("ofxCsv") << "Loading " << filePath;
-	ofLogVerbose("ofxCsv") << "  fieldSeparator: " << fieldSeparator;
-	ofLogVerbose("ofxCsv") << "  commentPrefix: " << commentPrefix;
+	ofLogVerbose("ofxCsv") << "  separator: " << fieldSeparator;
+	ofLogVerbose("ofxCsv") << "  comment: " << commentPrefix;
 	
 	// do some checks
 	ofFile file(ofToDataPath(filePath), ofFile::Reference);
@@ -132,12 +130,11 @@ bool ofxCsv::save(const string &path, bool quote, const string &separator) {
 		filePath = path;
 	}
 	fieldSeparator = separator;
-	quoteFields = quote;
 	
 	// verbose log print
 	ofLogVerbose("ofxCsv") << "Saving "  << filePath;
-	ofLogVerbose("ofxCsv") << "  fieldSeparator: " << fieldSeparator;
-	ofLogVerbose("ofxCsv") << "  quoteFields: " << quoteFields;
+	ofLogVerbose("ofxCsv") << "  separator: " << fieldSeparator;
+	ofLogVerbose("ofxCsv") << "  quote: " << quote;
 	
 	// do some checks
 	if(data.empty()) {
@@ -164,7 +161,7 @@ bool ofxCsv::save(const string &path, bool quote, const string &separator) {
 	ofBuffer buffer;
 	int lineCount = 0;
 	for(auto row : data) {
-		buffer.append(toRowString(row)+"\n");
+		buffer.append(toRowString(row, quote)+"\n");
 		lineCount++;
 	}
 	if(!ofBufferToFile(file.getAbsolutePath(), buffer)) {
@@ -396,28 +393,18 @@ void ofxCsv::trim() {
 }
 
 //--------------------------------------------------
-vector<string> ofxCsv::fromRowString(const string &row, const string &separator) {
-	return ofxCsvRow::fromString(row, separator);
-}
-
-//--------------------------------------------------
 vector<string> ofxCsv::fromRowString(const string &row) {
 	return ofxCsvRow::fromString(row, fieldSeparator);
 }
 
 //--------------------------------------------------
-string ofxCsv::toRowString(const vector<string> &row, bool quote, const string &separator) {
-	return ofxCsvRow::toString(row, separator, quote);
-}
-
-//--------------------------------------------------
-string ofxCsv::toRowString(const vector<string> &row, const string &separator) {
-	return ofxCsvRow::toString(row, separator, false);
+string ofxCsv::toRowString(const vector<string> &row, bool quote) {
+	return ofxCsvRow::toString(row, quote, fieldSeparator);
 }
 
 //--------------------------------------------------
 string ofxCsv::toRowString(const vector<string> &row) {
-	return ofxCsvRow::toString(row, fieldSeparator, false);
+	return ofxCsvRow::toString(row, false, fieldSeparator);
 }
 
 //--------------------------------------------------
@@ -426,18 +413,13 @@ string ofxCsv::getPath() const {
 }
 	
 //--------------------------------------------------
-string ofxCsv::getFieldSeparator() const {
+string ofxCsv::getSeparator() const {
 	return fieldSeparator;
 }
 
 //--------------------------------------------------
-string ofxCsv::getCommentPrefix() const {
+string ofxCsv::getComment() const {
 	return commentPrefix;
-}
-
-//--------------------------------------------------
-bool ofxCsv::getQuoteFields() const {
-	return quoteFields;
 }
 
 // PROTECTED

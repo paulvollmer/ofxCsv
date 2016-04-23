@@ -24,7 +24,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  @modified           2015.04.21
+ *  @modified           2016.04.23
  *  @version            0.2.0
  */
 
@@ -256,13 +256,6 @@ class ofxCsv {
 	
 		/// Split a row string into fields.
 		///
-		/// \param row Row string to split.
-		/// \param separator Field separator string, default comma ",".
-		/// \returns String vector of fields.
-		vector<string> fromRowString(const string &row, const string &separator);
-	
-		/// Split a row string into fields.
-		///
 		/// Uses the current field separator.
 		///
 		/// \param row Row string to split.
@@ -271,20 +264,12 @@ class ofxCsv {
 	
 		/// Join a row of separate column fields into a single string.
 		///
+		/// Uses the current field separator.
+		///
 		/// \param row Fields to join.
 		/// \param quote Should the fields be double quoted? default false.
-		/// \param separator Field separator string, default comma ",".
 		/// \returns The row as a single string.
-		string toRowString(const vector<string> &row, bool quote, const string &separator);
-	
-		/// Join a row of separate column fields into a single string.
-		///
-		/// Quotes the fields.
-		///
-		/// \param row Fields to join.
-		/// \param separator Field separator string, default comma ",".
-		/// \returns The row as a single string.
-		string toRowString(const vector<string> &cols, const string &separator);
+		string toRowString(const vector<string> &row, bool quote);
 	
 		/// Join a row of separate column fields into a single string.
 		///
@@ -298,13 +283,10 @@ class ofxCsv {
 		string getPath() const;
 	
 		/// Get the field separator, default comma ",".
-		string getFieldSeparator() const;
+		string getSeparator() const;
 	
 		/// Get the current comment line prefix, default "#".
-		string getCommentPrefix() const;
-	
-		/// Get whether fields should be quoted when saving, default false.
-		bool getQuoteFields() const;
+		string getComment() const;
 	
 	protected:
 	
@@ -322,5 +304,4 @@ class ofxCsv {
 		string filePath;       //< Current file path
 		string fieldSeparator; //< Field separator, default: comma ","
 		string commentPrefix;  //< Comment line prefix, default: "#"
-		bool quoteFields;      //< Save double quoted fields? default false
 };

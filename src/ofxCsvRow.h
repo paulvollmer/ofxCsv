@@ -24,7 +24,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  @modified           2015.04.21
+ *  @modified           2016.04.23
  *  @version            0.2.0
  */
 
@@ -277,10 +277,10 @@ class ofxCsvRow {
 		/// Join a row of separate column fields into a single string.
 		///
 		/// \param row Fields to join.
-		/// \param separator Field separator string, default comma ",".
 		/// \param quote Should the fields be double quoted? default false.
+		/// \param separator Field separator string, default comma ",".
 		/// \returns The row as a single string.
-		static string toString(const vector<string> &row, const string &separator, bool quote);
+		static string toString(const vector<string> &row, bool quote, const string &separator);
 	
 	protected:
 	

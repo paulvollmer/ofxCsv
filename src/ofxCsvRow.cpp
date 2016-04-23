@@ -24,8 +24,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  
- *  @modified           2015.04.21
+ *  @modified           2016.04.23
  *  @version            0.2.0
  */
 
@@ -96,7 +95,7 @@ void ofxCsvRow::clear() {
 
 //--------------------------------------------------
 ostream& operator<<(ostream &ostr, const ofxCsvRow &row) {
-	ostr << ofxCsvRow::toString(row, ",", false);
+	ostr << ofxCsvRow::toString(row, false, ",");
 	return ostr;
 }
 
@@ -411,7 +410,7 @@ vector<string> ofxCsvRow::fromString(const string &row, const string &separator)
 }
 
 //--------------------------------------------------
-string ofxCsvRow::toString(const vector<string> &row, const string &separator, bool quote) {
+string ofxCsvRow::toString(const vector<string> &row, bool quote, const string &separator) {
 	if(quote) { // quote field
 		vector<string> fields;
 		for(auto field : row) {
