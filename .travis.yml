@@ -7,7 +7,7 @@ install:
   - tar -zxf of_v0.9.3_linux_release.tar.gz
   - mv of_v0.9.3_linux_release openframeworks
   - echo "install python-software-properties"
-  - sudo apt-get install -Y python-software-properties
+  - sudo apt-get -y install python-software-properties
   - cd openframeworks/scripts/linux/ubuntu
   - echo "Y" | sudo ./install_dependencies.sh
   - cd ..
