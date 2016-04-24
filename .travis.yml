@@ -1,0 +1,16 @@
+language: c++
+compiler: gcc
+sudo: true
+install:
+  - echo "download and unzip openframeworks"
+  - wget --quiet http://openframeworks.cc/versions/v0.9.3/of_v0.9.3_linux_release.tar.gz
+  - tar -zxf of_v0.9.3_linux_release.tar.gz
+  - mv of_v0.9.3_linux_release openframeworks
+  - echo "install python-software-properties"
+  - sudo apt-get install -Y python-software-properties
+  - cd openframeworks/scripts/linux/ubuntu
+  - echo "Y" | sudo ./install_dependencies.sh
+  - cd ..
+  - ./compileOF.sh
+script:
+  - echo "TODO: testing"
