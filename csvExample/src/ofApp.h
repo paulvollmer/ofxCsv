@@ -2,7 +2,6 @@
  *  ofxCsv
  *  Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde)
  *
- *  
  *  The MIT License
  *
  *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
@@ -25,14 +24,8 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  
- *  @testet_oF          0071
- *  @testet_plattform   MacOs 10.6+
- *                      ??? Win
- *                      ??? Linux
- *  @dependencies       
- *  @modified           2012.06.28
- *  @version            0.1.3
+ *  @modified           2016.04.21
+ *  @version            0.2.0
  */
 
 #pragma once
@@ -40,13 +33,7 @@
 #include "ofMain.h"
 #include "ofxCsv.h"
 
-using namespace wng;
-
-
-
-
-
-class testApp : public ofBaseApp{
+class ofApp : public ofBaseApp{
 
 	public:
 		void setup();
@@ -67,5 +54,4 @@ class testApp : public ofBaseApp{
 		ofxCsv csvRecorder;
 	
 		bool recordingMouse;
-		
 };
