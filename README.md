@@ -111,7 +111,7 @@ starting addon at ofxWrongPowder Repository
 Contributors
 ------------
 
-- [Paul Vollmer](http://www.github.com/paulvollmer) paul.vollmer@fh-potsdam.de
+- [Paul Vollmer](http://www.github.com/paulvollmer)
 - [Luke Sturgeon](http://lukesturgeon.co.uk)
 - [hiroyuki](https://github.com/hiroyuki) hori.hiroyuki@gmail.com
 - [ofCinzio](https://github.com/ofCinzio) matteocinzio@tiscali.it
