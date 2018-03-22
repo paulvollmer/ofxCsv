@@ -2,7 +2,6 @@
  *  ofxCsv.cpp
  *  Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde)
  *
- *  
  *  The MIT License
  *
  *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
@@ -25,474 +24,405 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  
- *  @testet_oF          0071
- *  @testet_plattform   MacOs 10.6+
- *                      ??? Win
- *                      ??? Linux
- *  @dependencies       
- *  @modified           2012.06.28
- *  @version            0.1.3
+ *  @modified           2016.04.23
+ *  @version            0.2.0
  */
 
 #include "ofxCsv.h"
 
+#include "ofLog.h"
+#include "ofUtils.h"
+#include "ofFileUtils.h"
 
+//--------------------------------------------------
+ofxCsv::ofxCsv() {
+	fieldSeparator = ",";
+	commentPrefix = "#";
+}
 
-
-
-namespace wng {
+//--------------------------------------------------
+bool ofxCsv::load(const string &path, const string &separator, const string &comment) {
 	
-	/**
-	 * A Constructor, usually called to initialize and start the class.
-	 */
-	ofxCsv::ofxCsv(){
-		
-		// set the default seperator value
-		fileSeparator = ",";
-		numRows = 0;
-	}
-
-
+	clear();
 	
-	
-	
-	/**
-	 * Load a CSV File.
-	 *
-	 * @param path
-	 *        Set the File path.
-	 * @param separator
-	 *        Set the Separator to split CSV File.
-	 * @param comments
-	 *        Set the Comments sign.
-	 */
-	void ofxCsv::loadFile(string path, string separator, string comments){
-		
-		// Save Filepath, Separator and Comments to variables.
+	if(path != "") {
 		filePath = path;
-		fileSeparator = separator;
-		fileComments = comments;
-		#ifdef OFXCSV_LOG
-			ofLog() << "[ofxCsv] loadFile";
-			ofLog() << "         filePath: " << filePath;
-			ofLog() << "         fileSeparator: " << fileSeparator;
-			ofLog() << "         fileComments: " << fileComments;
-		#endif
-		
-		// Declare a File Stream.
-		ifstream fileIn;
-	
-		// Open your text File:
-		fileIn.open(path.c_str());
-	
-		// Check if File is open.
-		if(fileIn.is_open()) {
-			int lineCount = 0;
-			vector<string> rows;
-
-            string temp;
-			while(getline(fileIn, temp)) {
-
-
-			
-				// Skip empty lines.
-				if(temp.length() == 0) {
-					//cout << "Skip empty line no: " << lineCount << endl;
-				}
-				// Skip Comment lines.
-				else if(ofToString(temp[0]) == comments) {
-					//cout << "Skip Comment line no: " << lineCount << endl;
-				} else {
-					rows.push_back(temp);
-				
-					// Split row into cols.
-				// formerly was: vector<string> cols = ofSplitString(rows[lineCount], ",");
-					vector<string> cols = ofSplitString(rows[lineCount], separator);
-				
-					// Write the string to data.
-					data.push_back(cols);
-				
-					// Erase remaining elements.
-					cols.erase(cols.begin(), cols.end());
-					//cout << "cols: After erasing all elements, vector integers " << (cols.empty() ? "is" : "is not" ) << " empty" << endl;
-				
-					lineCount++;
-				}
-			}
-		
-			// Save the Number of Rows.
-			numRows = rows.size();
-		
-			// Erase remaining elements.
-			rows.erase(rows.begin(), rows.end());
-			//cout << "rows: After erasing all elements, vector integers " << (rows.empty() ? "is" : "is not" ) << " empty" << endl;
-		
-			// If File cannot opening, print a message to console.
-		} else {
-			cerr << "[ofxCsv] Error opening " << path << ".\n";
-		}
-	
 	}
-    
-    void ofxCsv::setData( vector<vector<string> > data)
-    {
-        this->data = data;
-        numRows = data.size();
-    }
+	fieldSeparator = separator;
+	commentPrefix = comment;
 	
+	// verbose log print
+	ofLogVerbose("ofxCsv") << "Loading " << filePath;
+	ofLogVerbose("ofxCsv") << "  separator: " << fieldSeparator;
+	ofLogVerbose("ofxCsv") << "  comment: " << commentPrefix;
 	
-	void ofxCsv::clear()
-    {
-        for( int i = 0; i < data.size(); i++ )
-        {
-            data[i].clear();
-        }
-        data.clear();
-		numRows = 0;
-    }
-	
-	
-	/**
-	 * Load a CSV File.
-	 * The default Comment sign is "#".
-	 *
-	 * @param path
-	 *        Set the file path.
-	 * @param separator
-	 *        Set the Separator to split CSV file.
-	 */
-	void ofxCsv::loadFile(string path, string separator){
-		
-		loadFile(path, separator, "#");
-	
+	// do some checks
+	ofFile file(ofToDataPath(filePath), ofFile::Reference);
+	if(!file.exists()) {
+		ofLogError("ofxCsv") << "Cannot load " << filePath << ": file not found";
+		return false;
+	}
+	if(!file.canRead()) {
+		ofLogError("ofxCsv") << "Cannot load " << filePath << ": file not readable";
+		return false;
+	}
+	if(file.isDirectory()) {
+		ofLogError("ofxCsv") << "Cannot load " << filePath << ": \"file\" is actually a directory";
+		return false;
 	}
 	
-	
-	
-	
-	
-	/**
-	 * Load a CSV File.
-	 * The default Separator is ",".
-	 * The default Comment sign is "#".
-	 *
-	 * @param path
-	 *        Set the file path.
-	 */
-	void ofxCsv::loadFile(string path){
+	// open file & read each line
+	int lineCount = 0;
+	int maxCols = 0;
+	ofBuffer buffer = ofBufferFromFile(file.getAbsolutePath());
+	for(auto line : buffer.getLines()) {
 		
-		loadFile(path, ",", "#");
-	
-	}
-	
-	
-	
-	
-	
-	/**
-	 * saveFile
-	 *
-	 * @param path
-	 *        Set the file path.
-	 * @param separator
-	 *        Set the Separator to split CSV file.
-	 * @param comments
-	 *        Set the Comments sign.
-	 */
-	void ofxCsv::saveFile(string path, string separator, string comments){
-		
-		createFile(path);
-		
-		ofstream myfile;
-		myfile.open(path.c_str());
-		if(myfile.is_open()){
-			// Write data to file.
-			for(int i=0; i<numRows; i++){
-				for(int j=0; j<data[i].size(); j++){
-					
-					myfile << data[i][j];
-					
-					if(j==(data[i].size()-1)){
-						myfile << "\n";
-					} else {
-						myfile << separator;
-					}
-				}
-			}
-			myfile.close();
-//			cout << "Open file" << endl;
-		} else {
-//			cout << "Unable to open file    " << endl;
-		}
-	
-	}
-	
-	
-	
-	
-	
-	/**
-	 * saveFile
-	 *
-	 * @param path
-	 *        Set the file path.
-	 * @param separator
-	 *        Set the Separator to split Csv file.
-	 */
-	void ofxCsv::saveFile(string path, string separator) {
-	
-		//createFile(path);
-		saveFile(path, separator, fileComments);
-	
-	}
-	
-	
-	
-	
-	
-	/**
-	 * saveFile
-	 *
-	 * @param path
-	 *        Set the file path.
-	 */
-	void ofxCsv::saveFile(string path) {
-	
-		//createFile(path);
-		saveFile(path, fileSeparator, fileComments);
-	
-	}
-	
-	
-	
-	
-	
-	/**
-	 * Save file.
-	 */
-	void ofxCsv::saveFile() {
-		
-		saveFile(filePath, fileSeparator, fileComments);
-	
-	}
-	
-	
-	
-	
-	
-	/**
-	 * createFile
-	 *
-	 * @param path
-	 *        Set the File Path.
-	 */
-	void ofxCsv::createFile(string path){
-		
-		FILE * pFile;
-		pFile = fopen (path.c_str(),"w");
-		
-		if (pFile!=NULL) {
-			//fputs ("fopen example",pFile);
-			fclose (pFile);
+		// skip empty lines
+		if(line.empty()) {
+			ofLogVerbose("ofxCsv") << "Skipping empty line: " << lineCount;
+			lineCount++;
+			continue;
 		}
 		
-	}
-	
-	
-	
-	
-	
-	/**
-	 * loadFromString
-	 *
-	 * @param s
-	 *        String Input.
-	 * @param separator
-	 *        Set the Separator to split CSV string.
-	 */
-	vector<string> ofxCsv::getFromString(string csv, string separator){
-	
-		vector<string> cols = ofSplitString(csv, separator);
-		return cols;
-	
-	}
-	
-	
-	
-	
-	
-	/**
-	 * loadFromString
-	 *
-	 * @param s
-	 *        String Input.
-	 */
-	vector<string> ofxCsv::getFromString(string csv){
+		// skip comment lines
+		// TODO: only checks substring at line beginning, does not ignore whitespace
+		if(line.substr(0, commentPrefix.length()) == commentPrefix) {
+			ofLogVerbose("ofxCsv") << "Skipping comment line: " << lineCount;
+			lineCount++;
+			continue;
+		}
 		
-		return getFromString(csv, ",");
+		// split line into separate files
+		vector<string> cols = fromRowString(line);
+		data.push_back(cols);
 	
+		// calc maxium table cols
+		if(cols.size() > maxCols) {
+			maxCols = cols.size();
+		}
+		lineCount++;
+	}
+	buffer.clear();
+	
+	// expand to fill in any missing cols, just in case
+	expand(data.size(), maxCols);
+
+	ofLogVerbose("ofxCsv") << "Read " << lineCount << " lines from " << filePath;
+	ofLogVerbose("ofxCsv") << "Loaded a " << data.size() << "x" << maxCols << " table";
+	
+	return true;
+}
+
+//--------------------------------------------------
+bool ofxCsv::load(const string &path, const string &separator) {
+	return load(path, separator, commentPrefix);
+}
+
+//--------------------------------------------------
+bool ofxCsv::load(const string &path) {
+	return load(path, fieldSeparator);
+}
+
+//--------------------------------------------------
+bool ofxCsv::save(const string &path, bool quote, const string &separator) {
+	
+	if(path != "") {
+		filePath = path;
+	}
+	fieldSeparator = separator;
+	
+	// verbose log print
+	ofLogVerbose("ofxCsv") << "Saving "  << filePath;
+	ofLogVerbose("ofxCsv") << "  separator: " << fieldSeparator;
+	ofLogVerbose("ofxCsv") << "  quote: " << quote;
+	
+	// do some checks
+	if(data.empty()) {
+		ofLogWarning("ofxCsv") << "Aborting save to " << filePath << ": data is empty";
+		return false;
+	}
+	ofFile file(ofToDataPath(filePath), ofFile::Reference);
+	if(!file.exists()) {
+		if(!createFile(filePath)) {
+			ofLogError("ofxCsv") << "Could not save to " << filePath << ": couldn't create";
+			return false;
+		}
+	}
+	if(!file.canWrite()) {
+		ofLogError("ofxCsv") << "Cannot save " << filePath << ": file not writable";
+		return false;
+	}
+	if(file.isDirectory()) {
+		ofLogError("ofxCsv") << "Cannot save " << filePath << ": \"file\" is actually a directory";
+		return false;
 	}
 	
-	
-	
-	
-	
-	/**
-	 * Get the Integer of a specific row and column.
-	 *
-	 * @param row
-	 *        row number
-	 * @param col
-	 *        column number
-	 * @return integer
-	 */
-	int ofxCsv::getInt(int row, int col){
-		return ofToInt(data[row][col]);//temp;
+	// fill buffer & write to file
+	ofBuffer buffer;
+	int lineCount = 0;
+	for(auto row : data) {
+		buffer.append(toRowString(row, quote)+"\n");
+		lineCount++;
 	}
-	
-	
-	/**
-	 * Get the Float of a specific row and column.
-	 *
-	 * @param row
-	 *        row number
-	 * @param col
-	 *        column number
-	 * @return float
-	 */
-	float ofxCsv::getFloat(int row, int col){
-		allocateData(row, col);
-		return ofToFloat(data[row][col]);//temp;
-	
+	if(!ofBufferToFile(file.getAbsolutePath(), buffer)) {
+		ofLogError("ofxCsv") << "Could not save to " << filePath << ": couldn't save buffer";
+		return false;
 	}
+	buffer.clear();
 	
+	ofLogVerbose("ofxCsv") << "Wrote " << lineCount << " lines to " << filePath;
 	
-	
-	
-	
-	/**
-	 * Get the String of a specific row and column.
-	 *
-	 * @param row
-	 *        row number
-	 * @param col
-	 *        column number
-	 * @return float
-	 */
-	string ofxCsv::getString(int row, int col){
-		allocateData(row, col);
-		return data[row][col];
-	
+	return true;
+}
+
+//--------------------------------------------------
+bool ofxCsv::save(const string &path, bool quote) {
+	return save(path, quote, fieldSeparator);
+}
+
+//--------------------------------------------------
+bool ofxCsv::createFile(const string &path) {
+	ofLogVerbose("ofxCsv") << "Creating "  << path;
+	ofFile file(ofToDataPath(path), ofFile::WriteOnly, false);
+	return file.create();
+}
+
+/// DATA IO
+
+//--------------------------------------------------
+void ofxCsv::load(const vector<ofxCsvRow> &rows) {
+	clear();
+	data = rows;
+}
+
+//--------------------------------------------------
+void ofxCsv::load(const vector<vector<string>> &rows) {
+	clear();
+	for(auto row : rows) {
+		data.push_back(ofxCsvRow(row));
 	}
-	
-	
-	
-	
-	
-	/**
-	 * Get the Boolean of a specific row and column.
-	 *
-	 * @param row
-	 *        row number
-	 * @param col
-	 *        column number
-	 * @return bool
-	 */
-	bool ofxCsv::getBool(int row, int col){
-		allocateData(row, col);
-		return ofToBool(data[row][col]);
-	
+}
+
+//--------------------------------------------------
+void ofxCsv::expand(int rows, int cols) {
+	rows = MAX(rows, 0);
+	if(data.empty()) {
+		rows = MAX(rows, 1);
 	}
-	
-	
-	
-	
-	
-	/**
-	 * Set a specific Integer to a new value.
-	 *
-	 * @param row
-	 *        row number
-	 * @param col
-	 *        column number
-	 * @param what
-	 *        new Integer
-	 */
-	void ofxCsv::setInt(int row, int col, int what){
-		allocateData(row, col);
-		data[row][col] = ofToString(what);
-	
+	cols = MAX(cols, 1);
+	while(data.size() < rows) {
+		data.push_back(ofxCsvRow());
 	}
-	
-	
-	
-	
-	
-	/**
-	 * Set a specific Float to a new value.
-	 *
-	 * @param row
-	 *        row number
-	 * @param col
-	 *        column number
-	 * @param what
-	 *        new row Float
-	 */
-	void ofxCsv::setFloat(int row, int col, float what){
-		allocateData(row, col);
-		data[row][col] = ofToString(what);
-	
+	for(auto &row : data) {
+		row.expand(cols-1);
 	}
-	
-	
-	
-	
-	
-	/**
-	 * Set a specific String to a new value.
-	 *
-	 * @param row
-	 *        row number
-	 * @param col
-	 *        column number
-	 * @param what
-	 *        new row String
-	 */
-	void ofxCsv::setString(int row, int col, string what){
-		allocateData(row, col);
-		data[row][col] = ofToString(what);
-	
+}
+
+//--------------------------------------------------
+void ofxCsv::clear() {
+	for(auto &row : data) {
+		row.clear();
 	}
-	
-	
-	
-	
-	
-	/**
-	 * setBool
-	 * set a specific Boolean to a new value.
-	 *
-	 * @param row
-	 *        row number
-	 * @param col
-	 *        column number
-	 * @param what
-	 *        new row Boolean
-	 */
-	void ofxCsv::setBool(int row, int col, bool what){
-		allocateData(row, col);
-		data[row][col] = ofToString(what);
-	
+	data.clear();
+}
+
+/// ROW ACCESS
+
+//--------------------------------------------------
+unsigned int ofxCsv::getNumRows() const {
+	return data.size();
+}
+
+//--------------------------------------------------
+unsigned int ofxCsv::getNumCols(int row) const {
+	if(row > -1 && row < data.size()) {
+		return data[row].size();
 	}
+	return 0;
+}
+
+//--------------------------------------------------
+ofxCsvRow& ofxCsv::getRow(int index) {
+	expand(index, getNumCols()-1);
+	return data[index];
+}
+
+//--------------------------------------------------
+void ofxCsv::addRow(ofxCsvRow &row) {
+	data.push_back(row);
+}
+
+//--------------------------------------------------
+void ofxCsv::addRow() {
+	data.push_back(ofxCsvRow());
+}
+
+//--------------------------------------------------
+void ofxCsv::setRow(int index, ofxCsvRow &row) {
+	int c = getNumCols()-1;
+	if(data.empty() && index == 0) {
+		data.push_back(row);
+	}
+	else {
+		expand(index+1, c);
+	}
+	data[index] = row;
+}
+
+//--------------------------------------------------
+void ofxCsv::insertRow(int index, ofxCsvRow &row) {
+	int c = getNumCols()-1;
+	if(data.empty() && index == 0) {
+		data.push_back(row);
+	}
+	else {
+		expand(index, c);
+		data.insert(data.begin()+index, row);
+	}
+	data[index].expand(c);
+}
+
+//--------------------------------------------------
+void ofxCsv::removeRow(int index) {
+	if(index < data.size()) {
+		data.erase(data.begin()+index);
+	}
+}
+
+//--------------------------------------------------
+void ofxCsv::print() const {
+	for(auto &row : data) {
+		ofLog() << row;
+	}
+}
+
+// RAW ACCESS
+
+//--------------------------------------------------
+vector<ofxCsvRow>& ofxCsv::getData() {
+	return data;
+}
+
+//--------------------------------------------------
+vector<ofxCsvRow>::iterator ofxCsv::begin() {
+	return data.begin();
+}
+
+//--------------------------------------------------
+vector<ofxCsvRow>::iterator ofxCsv::end() {
+	return data.end();
+}
+
+//--------------------------------------------------
+vector<ofxCsvRow>::const_iterator ofxCsv::begin() const{
+	return data.begin();
+}
+
+//--------------------------------------------------
+vector<ofxCsvRow>::const_iterator ofxCsv::end() const{
+	return data.end();
+}
+
+//--------------------------------------------------
+vector<ofxCsvRow>::reverse_iterator ofxCsv::rbegin() {
+	return data.rbegin();
+}
+
+//--------------------------------------------------
+vector<ofxCsvRow>::reverse_iterator ofxCsv::rend() {
+	return data.rend();
+}
+
+//--------------------------------------------------
+vector<ofxCsvRow>::const_reverse_iterator ofxCsv::rbegin() const{
+	return data.rbegin();
+}
+
+//--------------------------------------------------
+vector<ofxCsvRow>::const_reverse_iterator ofxCsv::rend() const{
+	return data.rend();
+}
+
+//--------------------------------------------------
+ofxCsv::operator vector<ofxCsvRow>() const {
+	return data;
+}
+
+//--------------------------------------------------
+ofxCsvRow& ofxCsv::operator[](size_t index) {
+	return data[index];
+}
+
+//--------------------------------------------------
+ofxCsvRow& ofxCsv::at(size_t index) {
+	return data.at(index);
+}
+
+//--------------------------------------------------
+ofxCsvRow& ofxCsv::front() {
+	return data.front();
+}
+
+//--------------------------------------------------
+ofxCsvRow& ofxCsv::back() {
+	return data.back();
+}
+
+//--------------------------------------------------
+size_t ofxCsv::size() const {
+	return data.size();
+}
+
+//--------------------------------------------------
+bool ofxCsv::empty() const {
+	return data.empty();
+}
+
+// UTIL
+
+//--------------------------------------------------
+void ofxCsv::trim() {
+	for(int row = 0; row < data.size(); row++) {
+		data[row].trim();
+	}
+}
+
+//--------------------------------------------------
+vector<string> ofxCsv::fromRowString(const string &row) {
+	return ofxCsvRow::fromString(row, fieldSeparator);
+}
+
+//--------------------------------------------------
+string ofxCsv::toRowString(const vector<string> &row, bool quote) {
+	return ofxCsvRow::toString(row, quote, fieldSeparator);
+}
+
+//--------------------------------------------------
+string ofxCsv::toRowString(const vector<string> &row) {
+	return ofxCsvRow::toString(row, false, fieldSeparator);
+}
+
+//--------------------------------------------------
+string ofxCsv::getPath() const {
+	return filePath;
+}
 	
-    void ofxCsv::allocateData(int row, int col)
-    {
-        if ( data.size() <= row)
-        {
-            data.push_back(vector<string>());
-            numRows = data.size();
-        }
-        if ( data[ row ].size() <= col ) data[ row ].push_back("");
-    }
+//--------------------------------------------------
+string ofxCsv::getSeparator() const {
+	return fieldSeparator;
+}
+
+//--------------------------------------------------
+string ofxCsv::getComment() const {
+	return commentPrefix;
+}
+
+// PROTECTED
+
+//--------------------------------------------------
+void ofxCsv::expandRow(int row, int cols) {
+	while(data.size() <= row) {
+		data.push_back(ofxCsvRow());
+	}
+	data[row].expand(cols);
 }

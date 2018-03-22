@@ -2,7 +2,6 @@
  *  ofxCsv
  *  Inspired and based on Ben Fry's [table class](http://benfry.com/writing/map/Table.pde)
  *
- *  
  *  The MIT License
  *
  *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
@@ -25,32 +24,20 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  
- *  @testet_oF          0071
- *  @testet_plattform   MacOs 10.6+
- *                      ??? Win
- *                      ??? Linux
- *  @dependencies       
- *  @modified           2012.06.28
- *  @version            0.1.3
+ *  @modified           2016.04.21
+ *  @version            0.2.0
  */
 
 #include "ofMain.h"
-#include "testApp.h"
+#include "ofApp.h"
 #include "ofAppGlutWindow.h"
 
+int main(){
 
-
-
-
-int main( ){
-
-    ofAppGlutWindow window;
-	ofSetupOpenGL(&window, 1024,768, OF_WINDOW);			// <-------- setup the GL context
+	ofSetupOpenGL(1024, 768, OF_WINDOW); // <-------- setup the GL context
 
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN
 	// pass in width and height too:
-	ofRunApp( new testApp());
-
+	ofRunApp(new ofApp());
 }
