@@ -1,16 +1,42 @@
 language: c++
 compiler: gcc
 sudo: true
+matrix:
+  include:
+  # fully specify builds, include can't dynamically expand matrix entries
+  # relative order of sudo and env is important so that addons: is recognized
+
+# Linux 64bit, OF master
+  - os: linux
+    dist: trusty
+    sudo: required
+    env: TARGET="linux64" OF_BRANCH="master"
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - gcc-4.9
+          - g++-4.9
+          - gdb
+
+# OSX, OF master
+  - os: osx
+    osx_image: xcode8
+    compiler: clang
+    env: TARGET="osx" OF_BRANCH="master"
+
+  # Exclude the default build that would otherwise be generated
+  # see https://github.com/travis-ci/travis-ci/issues/1228
+  exclude:
+    - compiler: gcc
+before_install:
+  - curl -SLsO https://raw.githubusercontent.com/bakercp/ofxAddonScripts/${OF_BRANCH}/scripts/ci/tools/install.sh
+  - source install.sh
 install:
-  - echo "download and unzip openframeworks"
-  - wget --quiet http://openframeworks.cc/versions/v0.9.3/of_v0.9.3_linux64_release.tar.gz
-  - tar -zxf of_v0.9.3_linux64_release.tar.gz
-  - mv of_v0.9.3_linux64_release openframeworks
-  - echo "install python-software-properties"
-  - sudo apt-get -y install python-software-properties
-  - cd openframeworks/scripts/linux/ubuntu
-  - echo "Y" | sudo ./install_dependencies.sh
-  - cd ..
-  - ./compileOF.sh
+  - do_install
 script:
-  - echo "TODO: testing"
+  - do_script
+
+git:
+  depth: 10
