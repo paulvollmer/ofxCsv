@@ -205,11 +205,11 @@ void ofxCsv::load(const vector<vector<string>> &rows) {
 
 //--------------------------------------------------
 void ofxCsv::expand(int rows, int cols) {
-	rows = MAX(rows, 0);
+  rows = max(rows, 0);
 	if(data.empty()) {
-		rows = MAX(rows, 1);
+		rows = max(rows, 1);
 	}
-	cols = MAX(cols, 1);
+	cols = max(cols, 1);
 	while(data.size() < rows) {
 		data.push_back(ofxCsvRow());
 	}

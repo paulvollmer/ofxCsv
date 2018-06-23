@@ -29,6 +29,7 @@
  */
 
 #pragma once
+using namespace std;
 
 #include "ofxCsvRow.h"
 
