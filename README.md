@@ -12,7 +12,7 @@ Check out for new release at <https://github.com/paulvollmer/ofxCsv>
 Current Version  
 ---------------
 
-0.2.0 (stable and versioned using [semantic versioning](http://semver.org))
+0.2.1 (stable and versioned using [semantic versioning](http://semver.org))
 
 Basic API Overview
 ------------------
@@ -93,6 +93,9 @@ Changelog
 
 A detailed changelog, intended for programmers.  
 
+0.2.1  
+bugfix for OF 0.10
+
 0.2.0  
 partial rewrite & update to OF 0.9+, added ofxCsvRow
 
@@ -123,4 +126,4 @@ License
 
 ofxCsv is Licensed under MIT Public License: http://www.opensource.org/licenses/MIT
 
-See also, LICENSE.txt in this distribution.
+See also, [LICENSE](LICENSE) in this distribution.

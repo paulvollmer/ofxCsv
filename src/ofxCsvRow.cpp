@@ -4,8 +4,8 @@
  *
  *  The MIT License
  *
- *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
- *  
+ *  Copyright (c) 2011-2019 Paul Vollmer, https://paulvollmer.net
+ *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
@@ -24,8 +24,8 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  @modified           2016.04.23
- *  @version            0.2.0
+ *  @modified           2019.05.15
+ *  @version            0.2.1
  */
 
 #include "ofxCsvRow.h"
