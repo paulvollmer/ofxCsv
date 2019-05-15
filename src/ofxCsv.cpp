@@ -4,8 +4,8 @@
  *
  *  The MIT License
  *
- *  Copyright (c) 2011-2014 Paul Vollmer, http://www.wng.cc
- *  
+ *  Copyright (c) 2011-2019 Paul Vollmer, https://paulvollmer.net
+ *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
@@ -24,8 +24,8 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  *
- *  @modified           2016.04.23
- *  @version            0.2.0
+ *  @modified           2019.05.15
+ *  @version            0.2.1
  */
 
 #include "ofxCsv.h"
@@ -205,11 +205,11 @@ void ofxCsv::load(const vector<vector<string>> &rows) {
 
 //--------------------------------------------------
 void ofxCsv::expand(int rows, int cols) {
-	rows = MAX(rows, 0);
+  rows = max(rows, 0);
 	if(data.empty()) {
-		rows = MAX(rows, 1);
+		rows = max(rows, 1);
 	}
-	cols = MAX(cols, 1);
+	cols = max(cols, 1);
 	while(data.size() < rows) {
 		data.push_back(ofxCsvRow());
 	}
