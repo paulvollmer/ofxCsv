@@ -79,9 +79,9 @@ void ofxCsvRow::load(const vector<string> &cols) {
 
 //--------------------------------------------------
 void ofxCsvRow::expand(int cols) {
-	cols = MAX(cols, 0);
+	cols = max(cols, 0);
 	if(data.empty()) {
-		cols = MAX(cols, 1);
+		cols = max(cols, 1);
 	}
 	while(data.size() <= cols) {
 		data.push_back("");
