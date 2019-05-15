@@ -30,6 +30,8 @@
 
 #pragma once
 
+using namespace std;
+
 #include "ofConstants.h"
 
 /// \class ofxCsvRow
